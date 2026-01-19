@@ -1,0 +1,408 @@
+.rounds-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.navbar {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: white;
+  color: #1e3c72;
+}
+
+.btn-primary:hover {
+  background: #f0f0f0;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.rounds-header h2 {
+  color: #333;
+  margin: 0;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state p {
+  color: #999;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.rounds-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.round-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 4px solid #1e3c72;
+}
+
+.round-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.round-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.round-header h3 {
+  margin: 0;
+  color: #1e3c72;
+  font-size: 1.2rem;
+}
+
+.round-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.round-status.in_progress {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.round-status.completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.round-details {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.round-details p {
+  margin: 0.5rem 0;
+}
+
+.round-details strong {
+  color: #333;
+}
+
+.round-detail {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.round-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.round-detail-header h2 {
+  margin: 0;
+  color: #1e3c72;
+}
+
+.round-date {
+  color: #999;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+}
+
+.scorecard {
+  margin-bottom: 2rem;
+}
+
+.scorecard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.scorecard-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.total-score {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e3c72;
+  margin: 0;
+}
+
+.holes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.hole-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hole-entry label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  margin: 0;
+}
+
+.hole-input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.strokes-input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.strokes-input:focus {
+  outline: none;
+  border-color: #1e3c72;
+}
+
+.strokes-input:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.par-display {
+  font-size: 0.85rem;
+  color: #999;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.actions .btn-primary {
+  flex: 1;
+  background: #1e3c72;
+  color: white;
+}
+
+.actions .btn-primary:hover {
+  background: #2a5298;
+}
+
+.entry-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.entry-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.entry-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.entry-form input,
+.entry-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.entry-form input:focus,
+.entry-form select:focus {
+  outline: none;
+  border-color: #1e3c72;
+  box-shadow: 0 0 4px rgba(30, 60, 114, 0.2);
+}
+
+.radio-group {
+  display: flex;
+  gap: 2rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: normal;
+  margin: 0;
+}
+
+.radio-label input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.entry-form button {
+  width: 100%;
+  background: #1e3c72;
+  color: white;
+  padding: 0.75rem;
+  margin-top: 1rem;
+}
+
+.entry-form button:hover:not(:disabled) {
+  background: #2a5298;
+}
+
+.entry-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #1e3c72;
+  box-shadow: 0 0 4px rgba(30, 60, 114, 0.2);
+}
+
+.handicap-display {
+  background: #f0f7ff;
+  border-left: 4px solid #1e3c72;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.handicap-display .label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.handicap-display .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e3c72;
+}
+
+.handicap-display .note {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 0.5rem;
+}
