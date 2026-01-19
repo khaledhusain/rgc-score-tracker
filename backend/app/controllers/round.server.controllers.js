@@ -112,3 +112,13 @@ exports.getHandicap = (req, res) => {
     res.json(handicap);
   });
 };
+
+exports.getCourseDetails = (req, res) => {
+    const db = require('../../database');
+    
+    // Get Tees
+    db.all("SELECT * FROM tees WHERE course_id = 1", [], (err, tees) => {
+        if (err) return res.status(500).json({error: err.message});
+        res.json({ tees });
+    });
+};

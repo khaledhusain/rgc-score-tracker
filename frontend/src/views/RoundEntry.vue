@@ -13,40 +13,35 @@
       <form @submit.prevent="handleCreateRound" class="entry-form">
         <div class="form-group">
           <label>Course</label>
-          <select v-model="courseId" required>
-            <option value="">Select a course</option>
-            <option value="1">Royal Golf Club</option>
+          <select v-model="courseId" disabled>
+            <option value="1">Royal Golf Club Bahrain</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tee Box</label>
+          <select v-model="teeColor" required>
+            <option value="Black">Black (75.9 / 141)</option>
+            <option value="Gold">Gold (73.9 / 137)</option>
+            <option value="Blue">Blue (72.1 / 133)</option>
+            <option value="White">White (73.6 / 132)</option>
+            <option value="Red">Red (69.9 / 126)</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Date</label>
-          <input
-            v-model="date"
-            type="date"
-            required
-            :max="todayDate"
-          />
+          <input v-model="date" type="date" required :max="todayDate" />
         </div>
 
         <div class="form-group">
           <label>Holes to Play</label>
           <div class="radio-group">
             <label class="radio-label">
-              <input
-                v-model.number="holesPlayed"
-                type="radio"
-                :value="9"
-              />
-              Front 9
+              <input v-model.number="holesPlayed" type="radio" :value="9" /> Front 9
             </label>
             <label class="radio-label">
-              <input
-                v-model.number="holesPlayed"
-                type="radio"
-                :value="18"
-              />
-              Full 18
+              <input v-model.number="holesPlayed" type="radio" :value="18" /> Full 18
             </label>
           </div>
         </div>
@@ -54,7 +49,6 @@
         <button type="submit" :disabled="loading" class="btn btn-primary">
           {{ loading ? 'Creating...' : 'Start Round' }}
         </button>
-
         <p v-if="error" class="error">{{ error }}</p>
       </form>
     </main>
@@ -63,7 +57,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, RouterLink } from 'vue-router';
 import { rounds } from '../services/api';
 
 function getTodayDate() {
@@ -72,6 +66,7 @@ function getTodayDate() {
 }
 
 const courseId = ref('1');
+const teeColor = ref('Blue'); // Default
 const date = ref(getTodayDate());
 const holesPlayed = ref(18);
 const loading = ref(false);
@@ -82,14 +77,16 @@ const todayDate = getTodayDate();
 const handleCreateRound = async () => {
   error.value = '';
   loading.value = true;
-
   try {
+    // Note: We are passing teeColor in the body, make sure backend Round.createRound accepts it
+    // For now, we are just storing the basic info to get you to the scorecard
     const response = await rounds.create(
       parseInt(courseId.value),
       date.value,
-      holesPlayed.value
+      holesPlayed.value,
+      teeColor.value 
     );
-    router.push(`/round/${response.roundId}`);
+    router.push(`/round/${response.roundId}?tee=${teeColor.value}`);
   } catch (err) {
     error.value = err.message;
     loading.value = false;

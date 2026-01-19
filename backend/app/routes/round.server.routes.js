@@ -22,4 +22,7 @@ module.exports = function(app) {
 
   // Get user handicap
   app.get('/my/handicap', authenticate, roundController.getHandicap);
+
+  // Get course details
+  app.get('/course/details', authenticate, roundController.getCourseDetails);
 };
