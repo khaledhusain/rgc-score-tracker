@@ -122,15 +122,22 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             )`);
 
         // 6. Hole Scores Table
+        // Updated to include putts and notes
         db.run(`CREATE TABLE IF NOT EXISTS hole_scores (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 round_id INTEGER NOT NULL,
                 hole_number INTEGER NOT NULL,
                 strokes INTEGER,
+                putts INTEGER,
+                notes TEXT,
                 par INTEGER,
                 FOREIGN KEY(round_id) REFERENCES rounds(id),
                 UNIQUE(round_id, hole_number)
-            )`);
+            )`, (err) => {
+                if(err) console.log('Hole_scores table already exists');
+                else console.log('Hole_scores table created');
+            }
+        );
     }
 });
 

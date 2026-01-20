@@ -57,13 +57,14 @@ exports.getRound = (req, res) => {
 // Update hole score
 exports.updateHoleScore = (req, res) => {
   const { roundId } = req.params;
-  const { holeNumber, strokes, par } = req.body;
+  const { holeNumber, strokes, par, putts, notes } = req.body; // Added putts and notes
 
   if (!holeNumber || strokes === undefined) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  Round.updateHoleScore(roundId, holeNumber, strokes, par, (err) => {
+  // Pass new fields to model
+  Round.updateHoleScore(roundId, holeNumber, strokes, par, putts, notes, (err) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
