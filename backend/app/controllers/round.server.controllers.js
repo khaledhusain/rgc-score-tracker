@@ -183,20 +183,50 @@ exports.getDashboardStats = (req, res) => {
     const userId = req.authenticatedUserID;
     const days = req.query.days || 30; // Default 30
 
-    Round.getUserStats(userId, days, (err, rounds) => {
-        if (err) return res.status(500).json({ error: err.message });
+    // Run queries in parallel
+    const p1 = new Promise((resolve, reject) => {
+        Round.getUserStats(userId, days, (err, data) => err ? reject(err) : resolve(data));
+    });
 
+    const p2 = new Promise((resolve, reject) => {
+        Round.getStrokeLeaks(userId, days, (err, data) => err ? reject(err) : resolve(data));
+    });
+
+    Promise.all([p1, p2]).then(([rounds, holes]) => {
         const count = rounds.length;
-        if (count === 0) return res.json({ avgScore: 0, avgPutts: 0, rounds: [] });
-
+        
+        // Basic Stats
         const totalScore = rounds.reduce((sum, r) => sum + (r.total_score || 0), 0);
         const totalPutts = rounds.reduce((sum, r) => sum + (r.total_putts || 0), 0);
+        
+        // Leak Calculation
+        let threePutts = 0;
+        let doubleBogeys = 0;
+        let missedFairways = 0;
+
+        holes.forEach(h => {
+            // 3-Putts
+            if (h.putts >= 3) threePutts++;
+            // Double Bogeys+
+            if (h.strokes >= h.par + 2) doubleBogeys++;
+            // Missed Fairways (Only count if explicitly marked as 0/Miss)
+            // We ignore NULL (Par 3s or data not entered)
+            if (h.fairway_hit === 0) missedFairways++;
+        });
+
+        // Calculate Averages (avoid divide by zero)
+        const leaks = count > 0 ? {
+            threePutts: (threePutts / count).toFixed(1),
+            doubleBogeys: (doubleBogeys / count).toFixed(1),
+            missedFairways: (missedFairways / count).toFixed(1)
+        } : { threePutts: 0, doubleBogeys: 0, missedFairways: 0 };
 
         res.json({
-            avgScore: (totalScore / count).toFixed(1),
-            avgPutts: (totalPutts / count).toFixed(1),
+            avgScore: count ? (totalScore / count).toFixed(1) : 0,
+            avgPutts: count ? (totalPutts / count).toFixed(1) : 0,
             totalRounds: count,
-            rounds: rounds // Return rounds for the graph/list
+            rounds: rounds,
+            leaks: leaks // Return the calculated leaks
         });
-    });
+    }).catch(err => res.status(500).json({ error: err.message }));
 };

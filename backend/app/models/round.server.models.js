@@ -122,3 +122,17 @@ exports.getUserStats = (userId, days, callback) => {
 
     db.all(query, [userId, days], callback);
 };
+
+// Get raw hole data for leak analysis
+exports.getStrokeLeaks = (userId, days, callback) => {
+    const query = `
+        SELECT 
+            hs.strokes, hs.putts, hs.par, hs.fairway_hit
+        FROM hole_scores hs
+        JOIN rounds r ON hs.round_id = r.id
+        WHERE r.user_id = ? 
+        AND r.status = 'completed'
+        AND r.date >= date('now', '-' || ? || ' days')
+    `;
+    db.all(query, [userId, days], callback);
+};

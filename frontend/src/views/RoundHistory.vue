@@ -46,13 +46,75 @@
         </div>
       </div>
 
-      <!-- CHART PLACEHOLDER -->
-      <div class="chart-container">
-          <div class="chart-header">
-              <h3>Score Trend</h3>
+      <!-- MIDDLE ROW: CHART & LEAKS -->
+      <div class="dashboard-mid-row">
+          
+          <!-- CHART (Left) -->
+          <div class="chart-container">
+              <div class="chart-header">
+                  <h3>Score Trend</h3>
+              </div>
+              <div class="chart-box">
+                  <p class="chart-placeholder-text">Chart coming soon...</p>
+              </div>
           </div>
-          <div class="chart-box">
-              <p class="chart-placeholder-text">Chart coming soon...</p>
+
+          <!-- LEAKS (Right) -->
+          <div class="leaks-container">
+              <div class="leaks-header">
+                  <h3>Stroke Leaks</h3>
+                  <span class="leaks-sub">Avg per round (last {{ daysFilter }} days)</span>
+              </div>
+
+              <!-- Leak 1: Doubles -->
+              <div class="leak-item">
+                  <div class="leak-top">
+                      <span class="leak-title">Double Bogeys+</span>
+                      <span class="leak-val">~{{ stats.leaks?.doubleBogeys || 0 }}</span>
+                  </div>
+                  <div class="progress-bar">
+                      <div class="fill fill-red" :style="{ width: getWidth(stats.leaks?.doubleBogeys, 5) }"></div>
+                  </div>
+              </div>
+
+              <!-- Leak 2: 3-Putts -->
+              <div class="leak-item">
+                  <div class="leak-top">
+                      <span class="leak-title">3-Putts</span>
+                      <span class="leak-val">~{{ stats.leaks?.threePutts || 0 }}</span>
+                  </div>
+                  <div class="progress-bar">
+                      <div class="fill fill-yellow" :style="{ width: getWidth(stats.leaks?.threePutts, 4) }"></div>
+                  </div>
+              </div>
+
+              <!-- Leak 3: Missed Fairways -->
+              <div class="leak-item">
+                  <div class="leak-top">
+                      <span class="leak-title">Missed Fairways</span>
+                      <span class="leak-val">~{{ stats.leaks?.missedFairways || 0 }}</span>
+                  </div>
+                    <div class="progress-bar">
+                        <div class="fill fill-lime" :style="{ width: getWidth(stats.leaks?.missedFairways, 14) }"></div>
+                    </div>
+              </div>
+
+                <!-- Updated Tip Box HTML -->
+                <div 
+                    class="takeaway-box" 
+                    @mouseenter="pauseTimer" 
+                    @mouseleave="resumeTimer"
+                    @click="manualNext"
+                >
+                    <p :style="{ opacity: fadeOpacity }">{{ currentTip }}</p>
+                    
+                    <!-- Add the 'resetting' class conditional -->
+                    <div 
+                        class="takeaway-progress" 
+                        :class="{ 'resetting': isResetting }" 
+                        :style="{ width: progress + '%' }"
+                    ></div>
+                </div>
           </div>
       </div>
 
@@ -122,7 +184,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import { auth, rounds, user } from '../services/api';
 
@@ -133,6 +195,96 @@ const stats = ref({ avgScore: 0, avgPutts: 0, totalRounds: 0 });
 const rounds_data = ref([]);
 const handicap = ref(null);
 const roundsCount = ref(0);
+
+// --- SMOOTH TIP LOGIC ---
+const currentTip = ref("");
+const fadeOpacity = ref(1);
+const progress = ref(0);
+const isResetting = ref(false); // New flag for instant bar reset
+const tips = [
+    "Don't follow a bad shot with a stupid shot.",
+    "Aim for the center of the green. Pins are for pros.",
+    "Bogeys don't kill rounds. Double bogeys do.",
+    "Speed is more important than line. Stop leaving it short.",
+    "You are not good enough to get mad at that shot.",
+    "Grip it light. Tension is the swing killer.",
+    "A 5-foot putt counts the same as a 300-yard drive.",
+    "Swing your swing. Don't play the swing thoughts.",
+    "When in trouble, get back in play. Hero shots usually fail.",
+    "Golf is not a game of perfect. Accept the variance."
+];
+
+let tipIndex = 0;
+let loopInterval = null;
+let isPaused = false;
+let isTransitioning = false;
+
+const TICK_RATE = 50;
+const DURATION = 5000;
+const STEP = (100 / DURATION) * TICK_RATE;
+
+const startTipLoop = () => {
+    if (loopInterval) clearInterval(loopInterval);
+    
+    loopInterval = setInterval(() => {
+        if (isPaused || isTransitioning) return;
+
+        progress.value += STEP;
+
+        if (progress.value >= 100) {
+            progress.value = 100;
+            triggerNextTipSequence();
+        }
+    }, TICK_RATE);
+};
+
+const triggerNextTipSequence = () => {
+    if (isTransitioning) return;
+    isTransitioning = true; // Stop the timer
+
+    // 1. Fade Out Text
+    fadeOpacity.value = 0;
+
+    setTimeout(() => {
+        // 2. Switch Text (while invisible)
+        tipIndex = (tipIndex + 1) % tips.length;
+        currentTip.value = tips[tipIndex];
+        
+        // 3. Reset Bar Instantly (Invisible switch)
+        isResetting.value = true; // Disable CSS transition
+        progress.value = 0;       // Snap to 0
+        
+        setTimeout(() => {
+            // 4. Re-enable CSS transition and Fade Text In
+            isResetting.value = false;
+            fadeOpacity.value = 1;
+
+            // 5. "Breathe" - Wait a moment before bar starts moving again
+            setTimeout(() => {
+                isTransitioning = false; // Resume timer
+            }, 500); // breathing room
+
+        }, 100); // Short delay to let DOM recognize 0% width
+        
+    }, 500); // 0.5s fade out time
+};
+
+// Interaction Handlers
+const pauseTimer = () => { isPaused = true; };
+const resumeTimer = () => { isPaused = false; };
+
+const manualNext = () => {
+    // If clicked, force the sequence immediately
+    progress.value = 100;
+    triggerNextTipSequence();
+};
+
+// Add helper for progress bars
+const getWidth = (val, max) => {
+    if(!val) return '0%';
+    const pct = (val / max) * 100;
+    return `${Math.min(pct, 100)}%`;
+};
 
 // Tee Helpers
 const tees = { 1: 'Black', 2: 'Gold', 3: 'Blue', 4: 'White', 5: 'Red' };
@@ -187,129 +339,13 @@ const handleLogout = async () => {
 };
 const formatDate = (d) => new Date(d).toLocaleDateString(undefined, { month:'short', day:'numeric' });
 
-onMounted(fetchData);
+onMounted(() => {
+    fetchData();
+    currentTip.value = tips[0];
+    startTipLoop();
+});
+
+onUnmounted(() => {
+    if (loopInterval) clearInterval(loopInterval);
+});
 </script>
-
-<style scoped>
-/* Dashboard Specific Styles */
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-.dashboard-header h2 { margin: 0; font-size: 2rem; color: #1e3c72; }
-
-.time-filters {
-    background: white;
-    padding: 4px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    display: flex;
-}
-.filter-btn {
-    background: transparent;
-    border: none;
-    padding: 6px 16px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #666;
-    border-radius: 6px;
-    transition: all 0.2s;
-}
-.filter-btn.active {
-    background: #1e3c72;
-    color: white;
-}
-
-/* Stat Cards */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-.stat-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
-}
-.card-label { font-size: 0.9rem; color: #666; font-weight: 600; margin-bottom: 0.5rem; }
-.card-value { font-size: 2.5rem; font-weight: 800; color: #1e3c72; line-height: 1; }
-.card-sub { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
-
-/* Chart Area */
-.chart-container {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid #f0f0f0;
-    min-height: 250px;
-}
-.chart-header h3 { margin: 0 0 1rem 0; color: #333; }
-.chart-box {
-    height: 200px;
-    background: #fafafa;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #eee;
-}
-.chart-placeholder-text { color: #ccc; font-weight: bold; }
-
-/* Rounds Grid */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-.rounds-grid-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-.round-grid-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.25rem;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.round-grid-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-    border-color: #1e3c72;
-}
-.rg-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; }
-.rg-date { font-weight: 600; }
-.rg-main { display: flex; justify-content: space-between; align-items: center; }
-.rg-score-box { display: flex; flex-direction: column; }
-.rg-score { font-size: 2.2rem; font-weight: 800; color: #333; line-height: 1; }
-.rg-par-rel { font-size: 0.9rem; color: #666; font-weight: 600; }
-.rg-meta { text-align: right; font-size: 0.9rem; color: #555; line-height: 1.4; }
-.rg-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-top: auto; border-top: 1px solid #f9f9f9; padding-top: 0.5rem; }
-.rg-tee { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-.rg-status { background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
-
-/* Tee Colors */
-.tee-black { color: #000; }
-.tee-gold { color: #d4a017; }
-.tee-blue { color: #1e3c72; }
-.tee-white { color: #999; }
-.tee-red { color: #d32f2f; }
-
-.rg-holes-sub { font-size: 1rem; color: #777; font-weight: 600; margin-left: 6px; }
-.rg-pace { font-size: 0.8rem; color: #999; margin-top: 4px; display: block; }
-.rg-status.completed { background: #e8f5e9; color: #2e7d32; }
-.rg-status.in_progress { background: #fff3e0; color: #ef6c00; }
-</style>

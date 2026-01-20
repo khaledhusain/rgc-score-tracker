@@ -7,6 +7,7 @@ import App from './App.vue'
 import './style.css'
 import './assets/auth.css'
 import './assets/rounds.css'
+import './assets/dashboard.css'
 
 const app = createApp(App)
 

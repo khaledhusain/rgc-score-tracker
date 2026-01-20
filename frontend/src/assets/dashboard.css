@@ -1,0 +1,230 @@
+/* Dashboard Specific Styles */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.dashboard-header h2 { margin: 0; font-size: 2rem; color: #1e3c72; }
+
+.time-filters {
+    background: white;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+}
+.filter-btn {
+    background: transparent;
+    border: none;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.filter-btn.active {
+    background: #1e3c72;
+    color: white;
+}
+
+.rounds-container .content {
+    max-width: 1400px;
+    padding: 1.5rem;
+}
+
+/* Stat Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-label { font-size: 0.9rem; color: #666; font-weight: 600; margin-bottom: 0.5rem; }
+.card-value { font-size: 2.5rem; font-weight: 800; color: #1e3c72; line-height: 1; }
+.card-sub { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
+
+/* Chart Area */
+.chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #f0f0f0;
+    min-height: 250px;
+}
+.chart-header h3 { margin: 0 0 1rem 0; color: #333; }
+.chart-box {
+    height: 200px;
+    background: #fafafa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #eee;
+}
+.chart-placeholder-text { color: #ccc; font-weight: bold; }
+
+/* Rounds Grid */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.rounds-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.round-grid-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.round-grid-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+    border-color: #1e3c72;
+}
+.rg-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; }
+.rg-date { font-weight: 600; }
+.rg-main { display: flex; justify-content: space-between; align-items: center; }
+.rg-score-box { display: flex; flex-direction: column; }
+.rg-score { font-size: 2.2rem; font-weight: 800; color: #333; line-height: 1; }
+.rg-par-rel { font-size: 0.9rem; color: #666; font-weight: 600; }
+.rg-meta { text-align: right; font-size: 0.9rem; color: #555; line-height: 1.4; }
+.rg-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-top: auto; border-top: 1px solid #f9f9f9; padding-top: 0.5rem; }
+.rg-tee { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.rg-status { background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
+
+/* Tee Colors */
+.tee-black { color: #000; }
+.tee-gold { color: #d4a017; }
+.tee-blue { color: #1e3c72; }
+.tee-white { color: #999; }
+.tee-red { color: #d32f2f; }
+
+.rg-holes-sub { font-size: 1rem; color: #777; font-weight: 600; margin-left: 6px; }
+.rg-pace { font-size: 0.8rem; color: #999; margin-top: 4px; display: block; }
+.rg-status.completed { background: #e8f5e9; color: #2e7d32; }
+.rg-status.in_progress { background: #fff3e0; color: #ef6c00; }
+
+/* Layout for Chart + Leaks */
+.dashboard-mid-row {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.chart-container { margin-bottom: 0; min-height: 400px; display: flex; flex-direction: column; }
+.chart-box { flex: 1; }
+
+.leaks-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; 
+}
+
+.takeaway-box {
+    background: #0f172a;
+    border-left: none !important;
+    padding: 0 1.5rem;
+    border-radius: 50px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.takeaway-box p { 
+    margin: 0; 
+    font-size: 0.95rem; 
+    color: #e2e8f0;
+    line-height: 1.4; 
+    text-align: center;
+    font-style: italic;
+    transition: opacity 0.5s ease;
+}
+
+.takeaway-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #10b981;
+    transition: width 0.18s ease-out;
+}
+
+.takeaway-progress.resetting {
+    transition: none;
+}
+
+.leaks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+}
+.leaks-header h3 { margin: 0; color: #1e3c72; font-size: 1.2rem; }
+.leaks-sub { color: #888; font-size: 0.8rem; }
+
+/* Progress Bars */
+.leak-item { margin-bottom: 1.5rem; }
+.leak-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; color: #444; }
+.progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+.fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+
+.fill-red { background: #ef4444; }    /* Doubles */
+.fill-yellow { background: #f59e0b; } /* 3 Putts */
+.fill-lime { background: #84cc16; } /* FIR miss */
+
+/* Tip Box */
+.takeaway-box {
+    background: #f0f9ff;
+    border-left: 4px solid #1e3c72;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: auto;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+}
+.takeaway-box:active { background: #e0f2fe; }
+.takeaway-box h4 { margin: 0 0 5px 0; color: #1e3c72; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.takeaway-box p { margin: 0; font-size: 0.95rem; color: #333; line-height: 1.4; font-style: italic; }
+
+@media (max-width: 900px) {
+    .dashboard-mid-row { grid-template-columns: 1fr; }
+}
