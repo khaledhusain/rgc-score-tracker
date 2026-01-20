@@ -11,13 +11,8 @@
       </div>
 
       <form @submit.prevent="handleCreateRound" class="entry-form">
-        <div class="form-group">
-          <label>Course</label>
-          <select v-model="courseId" disabled>
-            <option value="1">Royal Golf Club Bahrain</option>
-          </select>
-        </div>
-
+        <!-- Removed Course Selection Dropdown -->
+        
         <div class="form-group">
           <label>Tee Box</label>
           <select v-model="teeColor" required>
@@ -65,8 +60,8 @@ function getTodayDate() {
   return today.toISOString().split('T')[0];
 }
 
-const courseId = ref('1');
-const teeColor = ref('Blue'); // Default
+const courseId = ref(1); // Hardcoded ID
+const teeColor = ref('Blue');
 const date = ref(getTodayDate());
 const holesPlayed = ref(18);
 const loading = ref(false);
@@ -78,13 +73,11 @@ const handleCreateRound = async () => {
   error.value = '';
   loading.value = true;
   try {
-    // Note: We are passing teeColor in the body, make sure backend Round.createRound accepts it
-    // For now, we are just storing the basic info to get you to the scorecard
     const response = await rounds.create(
-      parseInt(courseId.value),
+      courseId.value,
       date.value,
       holesPlayed.value,
-      teeColor.value 
+      teeColor.value
     );
     router.push(`/round/${response.roundId}?tee=${teeColor.value}`);
   } catch (err) {

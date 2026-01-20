@@ -3,9 +3,7 @@
     <nav class="navbar">
       <h1>Royal Golf Club</h1>
       <div class="nav-actions">
-        <router-link to="/new-round" class="btn btn-primary">
-          + New Round
-        </router-link>
+        <router-link to="/new-round" class="btn btn-primary">+ New Round</router-link>
         <button @click="handleLogout" class="btn btn-secondary">Logout</button>
       </div>
     </nav>
@@ -16,10 +14,10 @@
       </div>
 
       <div v-if="loading" class="loading">Loading rounds...</div>
-
       <div v-else-if="error" class="error">{{ error }}</div>
 
       <div v-else>
+        <!-- Handicap Section -->
         <div class="handicap-display" v-if="handicap !== null">
           <div class="label">Current Handicap</div>
           <div class="value">{{ handicap }}</div>
@@ -28,22 +26,22 @@
           </div>
         </div>
 
-        <div v-if="rounds.length === 0" class="empty-state">
+        <!-- Empty State -->
+        <div v-if="rounds_data.length === 0" class="empty-state">
           <p>No rounds recorded yet.</p>
-          <router-link to="/new-round" class="btn btn-primary">
-            Start Your First Round
-          </router-link>
+          <router-link to="/new-round" class="btn btn-primary">Start Your First Round</router-link>
         </div>
 
+        <!-- Rounds List -->
         <div v-else class="rounds-list">
           <div
-            v-for="round in rounds"
+            v-for="round in rounds_data"
             :key="round.id"
             class="round-card"
             @click="goToRound(round.id)"
           >
             <div class="round-header">
-              <h3>{{ round.course_name }}</h3>
+              <h3>{{ round.course_name || 'Royal Golf Club' }}</h3>
               <span class="round-status" :class="round.status">
                 {{ formatStatus(round.status) }}
               </span>
@@ -52,9 +50,7 @@
             <div class="round-details">
               <p><strong>Date:</strong> {{ formatDate(round.date) }}</p>
               <p><strong>Holes:</strong> {{ round.holes_played }}</p>
-              <p v-if="round.total_score">
-                <strong>Score:</strong> {{ round.total_score }}
-              </p>
+              <p v-if="round.total_score"><strong>Score:</strong> {{ round.total_score }}</p>
             </div>
           </div>
         </div>
@@ -65,7 +61,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, RouterLink } from 'vue-router';
 import { auth, rounds, user } from '../services/api';
 
 const rounds_data = ref([]);
@@ -80,10 +76,13 @@ const fetchRounds = async () => {
   error.value = '';
 
   try {
-    const data = await rounds.getAll();
-    rounds_data.value = data;
+    // Parallel fetch is faster
+    const [roundsList, handicapData] = await Promise.all([
+      rounds.getAll(),
+      user.getHandicap()
+    ]);
     
-    const handicapData = await user.getHandicap();
+    rounds_data.value = roundsList || [];
     handicap.value = handicapData.handicap;
     roundsCount.value = handicapData.roundsCount;
   } catch (err) {
@@ -108,6 +107,7 @@ const goToRound = (roundId) => {
 };
 
 const formatDate = (dateString) => {
+  if (!dateString) return '';
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -117,10 +117,7 @@ const formatDate = (dateString) => {
 };
 
 const formatStatus = (status) => {
-  const statusMap = {
-    in_progress: 'In Progress',
-    completed: 'Completed',
-  };
+  const statusMap = { in_progress: 'In Progress', completed: 'Completed' };
   return statusMap[status] || status;
 };
 
