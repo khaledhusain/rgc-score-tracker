@@ -25,4 +25,11 @@ module.exports = function(app) {
 
   // Get course details
   app.get('/course/details', authenticate, roundController.getCourseDetails);
+
+  // Debug route to generate mock rounds
+  app.post('/debug/seed', authenticate, roundController.generateMockRounds);
+
+  // Get dashboard stats
+  app.get('/my/stats', authenticate, roundController.getDashboardStats);
+
 };

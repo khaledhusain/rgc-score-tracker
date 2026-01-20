@@ -106,3 +106,19 @@ exports.calculateHandicap = (userId, callback) => {
     callback(null, { handicap: handicap.toFixed(2), roundsCount: rounds.length });
   });
 };
+
+exports.getUserStats = (userId, days, callback) => {
+    // days = 30, 90, or 9999 (All Time)
+    const query = `
+        SELECT r.id, r.total_score, r.date, r.holes_played, r.status, t.name as tee_name,
+               (SELECT SUM(putts) FROM hole_scores WHERE round_id = r.id) as total_putts
+        FROM rounds r
+        LEFT JOIN tees t ON r.tee_id = t.id
+        WHERE r.user_id = ? 
+        AND r.status = 'completed'
+        AND r.date >= date('now', '-' || ? || ' days')
+        ORDER BY r.date DESC
+    `;
+
+    db.all(query, [userId, days], callback);
+};

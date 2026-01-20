@@ -123,3 +123,80 @@ exports.getCourseDetails = (req, res) => {
         res.json({ tees });
     });
 };
+
+// DEBUG: Generate Mock Rounds
+exports.generateMockRounds = (req, res) => {
+    const userId = req.authenticatedUserID;
+    const db = require('../../database');
+    const { count = 5 } = req.body;
+
+    const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+    const tees = [1, 2, 3, 4, 5]; 
+
+    let completed = 0;
+
+    for (let i = 0; i < count; i++) {
+        const daysAgo = getRandomInt(0, 90);
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        const dateStr = date.toISOString().split('T')[0];
+        
+        const courseId = 1;
+        const teeId = tees[getRandomInt(0, 4)];
+        
+        // 50% chance of 9 holes
+        const is9Holes = Math.random() > 0.5;
+        const holesPlayed = is9Holes ? 9 : 18;
+        
+        // Score: 36-55 for 9 holes, 72-105 for 18
+        const totalScore = is9Holes ? getRandomInt(36, 55) : getRandomInt(72, 105);
+        
+        db.run(`INSERT INTO rounds (user_id, course_id, tee_id, date, holes_played, total_score, status, completed_at) 
+                VALUES (?, ?, ?, ?, ?, ?, 'completed', datetime('now'))`, 
+                [userId, courseId, teeId, dateStr, holesPlayed, totalScore], function(err) {
+            
+            const roundId = this.lastID;
+            
+            // Just generate scores to match totals
+            let currentScore = 0;
+            const loopHoles = holesPlayed;
+            
+            for(let h=1; h<=loopHoles; h++) {
+                // ... same score generation logic, simplified ...
+                let strokes = 4 + getRandomInt(-1, 1);
+                if (h === loopHoles) strokes = totalScore - currentScore; // Force match total
+                if (strokes < 1) strokes = 3; // Safety check
+                
+                db.run(`INSERT INTO hole_scores (round_id, hole_number, strokes, putts, par) VALUES (?, ?, ?, ?, ?)`,
+                    [roundId, h, strokes, getRandomInt(1,2), 4]);
+                
+                currentScore += strokes;
+            }
+            
+            completed++;
+            if (completed === count) res.json({ message: `Generated ${count} rounds` });
+        });
+    }
+};
+
+exports.getDashboardStats = (req, res) => {
+    const userId = req.authenticatedUserID;
+    const days = req.query.days || 30; // Default 30
+
+    Round.getUserStats(userId, days, (err, rounds) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        const count = rounds.length;
+        if (count === 0) return res.json({ avgScore: 0, avgPutts: 0, rounds: [] });
+
+        const totalScore = rounds.reduce((sum, r) => sum + (r.total_score || 0), 0);
+        const totalPutts = rounds.reduce((sum, r) => sum + (r.total_putts || 0), 0);
+
+        res.json({
+            avgScore: (totalScore / count).toFixed(1),
+            avgPutts: (totalPutts / count).toFixed(1),
+            totalRounds: count,
+            rounds: rounds // Return rounds for the graph/list
+        });
+    });
+};

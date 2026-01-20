@@ -67,8 +67,9 @@ export const auth = {
 };
 
 export const rounds = {
-  create: (courseId, date, holesPlayed) =>
-    apiCall('POST', '/rounds', { courseId, date, holesPlayed }),
+  create: (courseId, date, holesPlayed, teeColor) =>
+    apiCall('POST', '/rounds', { courseId, date, holesPlayed, teeColor }),
+
   getAll: () => apiCall('GET', '/rounds'),
   getById: (roundId) => apiCall('GET', `/rounds/${roundId}`),
   updateHoleScore: (roundId, holeNumber, strokes, par, putts, notes, fairwayHit) =>
@@ -83,6 +84,8 @@ export const rounds = {
   finalize: (roundId, totalScore, notes) =>
     apiCall('POST', `/rounds/${roundId}/finalize`, { totalScore, notes }),
   delete: (roundId) => apiCall('DELETE', `/rounds/${roundId}`),
+  getStats: (days) => apiCall('GET', `/my/stats?days=${days}`),
+  seedRounds: (count) => apiCall('POST', '/debug/seed', { count }),
 };
 
 export const user = {
