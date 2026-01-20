@@ -71,13 +71,14 @@ export const rounds = {
     apiCall('POST', '/rounds', { courseId, date, holesPlayed }),
   getAll: () => apiCall('GET', '/rounds'),
   getById: (roundId) => apiCall('GET', `/rounds/${roundId}`),
-  updateHoleScore: (roundId, holeNumber, strokes, par, putts, notes) =>
+  updateHoleScore: (roundId, holeNumber, strokes, par, putts, notes, fairwayHit) =>
     apiCall('PATCH', `/rounds/${roundId}/hole/${holeNumber}`, {
       strokes: parseInt(strokes),
       par: parseInt(par),
       holeNumber: parseInt(holeNumber),
-      putts: putts !== null ? parseInt(putts) : null, // Handle 0 putts correctly
-      notes: notes || ''
+      putts: putts !== null ? parseInt(putts) : null,
+      notes: notes || '',
+      fairwayHit: fairwayHit // Pass boolean/integer
     }),
   finalize: (roundId, totalScore, notes) =>
     apiCall('POST', `/rounds/${roundId}/finalize`, { totalScore, notes }),

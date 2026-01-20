@@ -46,18 +46,18 @@ exports.getHoleScores = (roundId, callback) => {
 };
 
 // Update hole score
-exports.updateHoleScore = (roundId, holeNumber, strokes, par, putts, notes, callback) => {
+exports.updateHoleScore = (roundId, holeNumber, strokes, par, putts, notes, fairwayHit, callback) => {
   const query = `
-    INSERT INTO hole_scores (round_id, hole_number, strokes, par, putts, notes)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO hole_scores (round_id, hole_number, strokes, par, putts, notes, fairway_hit)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(round_id, hole_number) DO UPDATE SET
     strokes=excluded.strokes,
     par=excluded.par,
     putts=excluded.putts,
-    notes=excluded.notes
+    notes=excluded.notes,
+    fairway_hit=excluded.fairway_hit
   `;
-  // Using modern SQLite ON CONFLICT syntax for cleaner upsert
-  db.run(query, [roundId, holeNumber, strokes, par, putts, notes], callback);
+  db.run(query, [roundId, holeNumber, strokes, par, putts, notes, fairwayHit], callback);
 };
 
 // Finalize round

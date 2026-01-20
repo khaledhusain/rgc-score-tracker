@@ -417,14 +417,13 @@ textarea:focus {
     overflow: hidden;
 }
 
-/* Updated grid for 7 columns to accommodate Putts & Notes */
 .scorecard-header-row, .score-row {
     display: grid;
-    /* Hole | Par | Idx | Dist | Score | Putts | Notes */
-    grid-template-columns: 0.8fr 0.8fr 0.8fr 1.5fr 1.2fr 1fr 1fr;
+    grid-template-columns: repeat(8, 1fr);
+    
     text-align: center;
     border-bottom: 1px solid #eee;
-    padding: 8px 0;
+    padding: 12px 0;
     align-items: center;
 }
 
@@ -434,8 +433,29 @@ textarea:focus {
     font-weight: bold;
 }
 
-.col-hole { font-weight: bold; color: #1e3c72; }
-.scorecard-header-row .col-hole { color: white; }
+/* Hole Number */
+.col-hole { 
+    font-weight: 900;
+    color: #1e3c72; 
+    font-size: 1.1rem;
+}
+
+/* Header Row Hole */
+.scorecard-header-row .col-hole { 
+    color: white; 
+}
+
+/* Data Columns (Par, Index, Dist) */
+.col-data {
+    font-weight: 700;
+    color: #444;
+    font-size: 1rem;
+}
+
+.scorecard-header-row .col-data {
+    color: white;
+    font-weight: 700;
+}
 
 /* Alignment Fixes */
 .header-center { text-align: center; }
@@ -445,7 +465,7 @@ textarea:focus {
 .col-action { display: flex; justify-content: center; }
 
 .score-input {
-    width: 60px; /* Fixed width for better alignment */
+    width: 60px;
     text-align: center;
     padding: 5px;
     border: 1px solid #ddd;
@@ -454,18 +474,34 @@ textarea:focus {
     font-weight: bold;
 }
 
+/* --- BUTTONS & INPUTS --- */
+
+/* Putts & Notes Buttons */
 .icon-btn {
-    background: none;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #444;
+    width: 100%;
+    height: 36px;
     cursor: pointer;
-    padding: 4px 8px;
-    font-size: 1rem;
-    transition: background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.icon-btn:hover { background: #f0f0f0; }
-.icon-btn.has-data { background: #e3f2fd; border-color: #1e3c72; color: #1e3c72; font-weight: bold; }
+.icon-btn:hover {
+    background: #fafafa; /* Very subtle hover */
+    border-radius: 4px;
+}
+
+/* Remove the blue background style */
+.icon-btn.has-data {
+    background: transparent;
+    border-color: transparent;
+    color: #444; 
+}
 
 .total-row {
     background: #f9f9f9;
@@ -513,6 +549,7 @@ textarea:focus {
     justify-content: space-between;
     gap: 10px;
     margin-bottom: 1.5rem;
+    color: #444
 }
 
 .putt-btn {
@@ -540,3 +577,116 @@ textarea:focus {
 
 .full-width { width: 100%; }
 .modal-hint { font-size: 0.8rem; color: #666; text-align: center; margin-bottom: 1rem; }
+
+/* --- SCORE INPUTS & SHAPES --- */
+
+.score-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* No fixed height here, let the content define it */
+}
+
+/* The actual input needs to be transparent and centered inside the shape */
+.score-input {
+    width: 40px;   /* Slightly larger */
+    height: 40px;  /* Perfectly square */
+    text-align: center;
+    padding: 0;    /* Crucial for centering */
+    border: 3px solid transparent; /* Reserve space for border so text doesn't jump */
+    background: transparent;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: text;
+    display: block;
+    box-sizing: border-box;
+    margin: 4px; /* Margin to prevent double-borders from clipping */
+    
+    /* Font settings for vertical centering */
+    font-family: inherit;
+    line-height: normal; /* Reset line height */
+}
+
+/* Hide focus outline but keep the bottom border to show it's active */
+.score-input:focus {
+    outline: none;
+    border-bottom: 3px solid #1e3c72;
+    border-radius: 0 !important; /* Reset radius on focus */
+}
+
+/* --- SHAPES --- */
+
+/* Birdie (1 under) - Thick Red Circle */
+.score-under {
+    border: 3px solid #d32f2f; /* Thicker */
+    border-radius: 50%;
+    color: #d32f2f;
+}
+
+/* Eagle (2+ under) - Red Circle with GAP */
+.score-double-under {
+    border: 3px solid #d32f2f; /* Inner Ring */
+    border-radius: 50%;
+    color: #d32f2f;
+    /* This creates the outer ring with a gap */
+    outline: 3px solid #d32f2f;
+    outline-offset: 3px; /* The Gap size */
+}
+
+/* Bogey (1 over) - Thick Blue Square */
+.score-over {
+    border: 3px solid #1976d2; /* Thicker */
+    border-radius: 0;
+    color: #1976d2;
+}
+
+/* Double Bogey+ (2+ over) - Blue Square with GAP */
+.score-double-over {
+    border: 3px solid #1976d2; /* Inner Square */
+    border-radius: 0;
+    color: #1976d2;
+    /* This creates the outer square with a gap */
+    outline: 3px solid #1976d2;
+    outline-offset: 3px; /* The Gap size */
+}
+
+/* FIR Toggle Styles */
+.fir-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
+    transition: all 0.2s;
+}
+
+.fir-btn.hit {
+    background-color: #4caf50; /* Green for Hit */
+    border-color: #4caf50;
+    color: white;
+}
+
+.fir-btn.miss {
+    background-color: #f44336; /* Red for Miss */
+    border-color: #f44336;
+    color: white;
+}
+
+.fir-placeholder {
+    color: #eee;
+    font-size: 1.2rem;
+}
+
+/* Hide Spinner on Input Number */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
