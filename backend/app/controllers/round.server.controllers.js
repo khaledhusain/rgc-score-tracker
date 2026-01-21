@@ -230,3 +230,41 @@ exports.getDashboardStats = (req, res) => {
         });
     }).catch(err => res.status(500).json({ error: err.message }));
 };
+
+// Get full profile data
+exports.getProfile = (req, res) => {
+    const userId = req.authenticatedUserID;
+
+    const p1 = new Promise((resolve, reject) => {
+        Round.getCareerStats(userId, (err, data) => err ? reject(err) : resolve(data));
+    });
+
+    const p2 = new Promise((resolve, reject) => {
+        Round.getEclecticScores(userId, (err, data) => err ? reject(err) : resolve(data));
+    });
+
+    Promise.all([p1, p2]).then(([stats, eclecticRows]) => {
+        
+        // Calculate Avg Putts
+        const avgPutts = stats.total_rounds > 0 
+            ? (stats.total_putts / stats.total_rounds).toFixed(1) 
+            : 0;
+
+        const eclecticMap = {};
+        eclecticRows.forEach(row => {
+            if (!eclecticMap[row.tee_id]) eclecticMap[row.tee_id] = {};
+            eclecticMap[row.tee_id][row.hole_number] = row.min_score;
+        });
+
+        res.json({
+            career: {
+                rounds: stats.total_rounds || 0,
+                birdies: stats.total_birdies || 0,
+                pars: stats.total_pars || 0,
+                avgPutts: avgPutts
+            },
+            eclectic: eclecticMap
+        });
+
+    }).catch(err => res.status(500).json({ error: err.message }));
+};

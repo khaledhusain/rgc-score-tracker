@@ -136,3 +136,34 @@ exports.getStrokeLeaks = (userId, days, callback) => {
     `;
     db.all(query, [userId, days], callback);
 };
+
+// Get lifetime aggregated stats
+exports.getCareerStats = (userId, callback) => {
+    const query = `
+        SELECT
+            COUNT(DISTINCT r.id) as total_rounds,
+            COUNT(CASE WHEN hs.strokes < hs.par THEN 1 END) as total_birdies,
+            COUNT(CASE WHEN hs.strokes = hs.par THEN 1 END) as total_pars,
+            SUM(hs.putts) as total_putts
+        FROM hole_scores hs
+        JOIN rounds r ON hs.round_id = r.id
+        WHERE r.user_id = ? AND r.status = 'completed'
+    `;
+    db.get(query, [userId], callback);
+};
+
+// Get lowest score per hole, grouped by Tee ID
+exports.getEclecticScores = (userId, callback) => {
+    const query = `
+        SELECT
+            r.tee_id,
+            hs.hole_number,
+            MIN(hs.strokes) as min_score
+        FROM hole_scores hs
+        JOIN rounds r ON hs.round_id = r.id
+        WHERE r.user_id = ? AND r.status = 'completed' AND r.tee_id IS NOT NULL
+        GROUP BY r.tee_id, hs.hole_number
+        ORDER BY r.tee_id, hs.hole_number
+    `;
+    db.all(query, [userId], callback);
+};

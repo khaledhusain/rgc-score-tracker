@@ -32,4 +32,7 @@ module.exports = function(app) {
   // Get dashboard stats
   app.get('/my/stats', authenticate, roundController.getDashboardStats);
 
+  // Get career profile data
+  app.get('/my/profile', authenticate, roundController.getProfile);
+
 };
