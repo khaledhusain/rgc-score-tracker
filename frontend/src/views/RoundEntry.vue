@@ -5,54 +5,88 @@
       <router-link to="/" class="btn btn-secondary">Back</router-link>
     </nav>
 
-    <main class="content">
-      <div class="rounds-header">
-        <h2>Start New Round</h2>
+    <div class="entry-container">
+      <div class="entry-card">
+        <div class="entry-header">
+            <h2>New Round</h2>
+            <!-- Subtitle removed -->
+        </div>
+
+        <form @submit.prevent="handleCreateRound">
+            
+            <!-- 1. Tee Selection -->
+            <div class="form-section">
+                <label class="section-label">Tee Box</label>
+                <div class="tee-selector">
+                    <div 
+                        v-for="color in ['Black', 'Gold', 'Blue', 'White', 'Red']"
+                        :key="color"
+                        class="tee-dot"
+                        :class="[`t-${color.toLowerCase()}`, { selected: teeColor === color }]"
+                        @click="teeColor = color"
+                        :title="color"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- 2. Holes Selection -->
+            <div class="form-section">
+                <label class="section-label">Holes</label>
+                <div class="hole-selector">
+                    <button 
+                        type="button"
+                        class="hole-option" 
+                        :class="{ active: holeSelection === 'Front 9' }"
+                        @click="holeSelection = 'Front 9'"
+                    >
+                        Front 9
+                    </button>
+                    <button 
+                        type="button"
+                        class="hole-option" 
+                        :class="{ active: holeSelection === 'Back 9' }"
+                        @click="holeSelection = 'Back 9'"
+                    >
+                        Back 9
+                    </button>
+                    <button 
+                        type="button"
+                        class="hole-option" 
+                        :class="{ active: holeSelection === 'Full 18' }"
+                        @click="holeSelection = 'Full 18'"
+                    >
+                        Full 18
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Date -->
+            <div class="form-section">
+                <label class="section-label">Date</label>
+                <input 
+                    v-model="date" 
+                    type="date" 
+                    required 
+                    :max="todayDate" 
+                    class="clean-date-input"
+                />
+            </div>
+
+            <!-- 4. Submit -->
+            <button type="submit" :disabled="loading" class="action-btn">
+                {{ loading ? 'Starting...' : 'Start Round' }}
+            </button>
+
+            <p v-if="error" class="error">{{ error }}</p>
+        </form>
       </div>
-
-      <form @submit.prevent="handleCreateRound" class="entry-form">
-        <!-- Removed Course Selection Dropdown -->
-        
-        <div class="form-group">
-          <label>Tee Box</label>
-          <select v-model="teeColor" required>
-            <option value="Black">Black (75.9 / 141)</option>
-            <option value="Gold">Gold (73.9 / 137)</option>
-            <option value="Blue">Blue (72.1 / 133)</option>
-            <option value="White">White (73.6 / 132)</option>
-            <option value="Red">Red (69.9 / 126)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Date</label>
-          <input v-model="date" type="date" required :max="todayDate" />
-        </div>
-
-        <div class="form-group">
-          <label>Holes to Play</label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input v-model.number="holesPlayed" type="radio" :value="9" /> Front 9
-            </label>
-            <label class="radio-label">
-              <input v-model.number="holesPlayed" type="radio" :value="18" /> Full 18
-            </label>
-          </div>
-        </div>
-
-        <button type="submit" :disabled="loading" class="btn btn-primary">
-          {{ loading ? 'Creating...' : 'Start Round' }}
-        </button>
-        <p v-if="error" class="error">{{ error }}</p>
-      </form>
-    </main>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter, RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { rounds } from '../services/api';
 
 function getTodayDate() {
@@ -60,10 +94,10 @@ function getTodayDate() {
   return today.toISOString().split('T')[0];
 }
 
-const courseId = ref(1); // Hardcoded ID
-const teeColor = ref('Blue');
+const courseId = ref(1); 
+const teeColor = ref('Blue'); // Default
+const holeSelection = ref('Full 18'); // Default text selection
 const date = ref(getTodayDate());
-const holesPlayed = ref(18);
 const loading = ref(false);
 const error = ref('');
 const router = useRouter();
@@ -72,11 +106,17 @@ const todayDate = getTodayDate();
 const handleCreateRound = async () => {
   error.value = '';
   loading.value = true;
+  
+  // Logic to map selection to number of holes
+  // Currently backend only tracks total count, not which 9.
+  // We send 9 for Front/Back, and 18 for Full.
+  const holesCount = holeSelection.value === 'Full 18' ? 18 : 9;
+
   try {
     const response = await rounds.create(
       courseId.value,
       date.value,
-      holesPlayed.value,
+      holesCount,
       teeColor.value
     );
     router.push(`/round/${response.roundId}?tee=${teeColor.value}`);

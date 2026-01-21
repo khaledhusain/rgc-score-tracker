@@ -1,0 +1,162 @@
+/* --- LAYOUT --- */
+.entry-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Centers vertically */
+    padding: 1rem;
+}
+
+.entry-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Soft, modern shadow */
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+}
+
+.entry-header h2 {
+    margin: 0 0 2.5rem 0;
+    color: #1e3c72;
+    font-size: 1.8rem;
+    
+}
+
+.entry-sub {
+    color: #888;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* --- FORM ELEMENTS --- */
+.form-section {
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.section-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- TEE SELECTION (DOTS) --- */
+.tee-selector {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.2rem; 
+    align-items: center;
+}
+
+.tee-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    border: 2px solid rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+/* Hover Effect */
+.tee-dot:hover {
+    transform: scale(1.03);
+    filter: brightness(0.9);
+}
+
+/* Selection Rings */
+.tee-dot.selected {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 4px white, 0 0 0 6px #333; 
+}
+
+/* Tee Colors */
+.t-black { background-color: #222; }
+.t-gold  { background-color: #d4af37; }
+.t-blue  { background-color: #1e3c72; }
+.t-white { background-color: #ffffff; }
+.t-red   { background-color: #d32f2f; }
+
+
+/* --- HOLE SELECTION (SEGMENTED) --- */
+.hole-selector {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.hole-option {
+    flex: 1;
+    padding: 12px;
+    background: #f9f9f9;
+    border: none;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+    font-weight: 600;
+    color: #666;
+    transition: background 0.2s;
+}
+
+.hole-option:last-child {
+    border-right: none;
+}
+
+.hole-option:hover {
+    background: #f0f0f0;
+}
+
+.hole-option.active {
+    background: #1e3c72;
+    color: white;
+}
+
+/* --- DATE PICKER --- */
+.clean-date-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #333;
+    background: #f9f9f9;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.clean-date-input:focus {
+    border-color: #1e3c72;
+    background: white;
+}
+
+/* --- ACTIONS --- */
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    background: #1e3c72; /* Brand Blue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 1rem;
+}
+
+.action-btn:hover {
+    background: #152b52;
+}
+
+.action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

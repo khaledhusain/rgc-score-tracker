@@ -8,6 +8,7 @@ import './style.css'
 import './assets/auth.css'
 import './assets/rounds.css'
 import './assets/dashboard.css'
+import './assets/entry.css'
 
 const app = createApp(App)
 
