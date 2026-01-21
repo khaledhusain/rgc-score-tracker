@@ -90,4 +90,5 @@ export const rounds = {
 
 export const user = {
   getHandicap: () => apiCall('GET', '/my/handicap'),
+  getInfo: () => apiCall('GET', '/my/info'),
 };

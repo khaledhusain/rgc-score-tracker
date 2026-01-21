@@ -1,18 +1,13 @@
 <template>
   <div class="rounds-container">
-    <nav class="navbar">
-      <h1>Royal Golf Club</h1>
-      <div class="nav-actions">
-        <button @click="generateMockData" class="btn btn-secondary small">
-          + Add 5 Mock Rounds
-        </button>
-        <button @click="handleLogout" class="btn btn-secondary">Logout</button>
-      </div>
-    </nav>
-
+    <Navbar />
     <main class="content">
       <div class="dashboard-header">
         <h2>Dashboard</h2>
+
+        <button @click="generateMockData" class="btn btn-secondary small">
+          + Add 5 Mock Rounds
+        </button>
         
         <div class="time-filters">
             <button 
@@ -184,6 +179,7 @@
 </template>
 
 <script setup>
+import Navbar from '../components/Navbar.vue';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import { auth, rounds, user } from '../services/api';

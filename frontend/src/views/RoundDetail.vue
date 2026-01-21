@@ -1,9 +1,6 @@
 <template>
   <div class="rounds-container">
-    <nav class="navbar">
-      <h1>Royal Golf Club</h1>
-      <router-link to="/" class="btn btn-secondary">Back</router-link>
-    </nav>
+    <Navbar />
 
     <main class="content">
       <div v-if="loading" class="loading">Loading round...</div>
@@ -178,6 +175,7 @@
 </template>
 
 <script setup>
+import Navbar from '../components/Navbar.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { rounds } from '../services/api';

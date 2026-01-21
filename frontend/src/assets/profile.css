@@ -1,0 +1,12 @@
+/* --- PROFILE PAGE --- */
+.page-container { 
+    min-height: 100vh; 
+    background: #f5f5f5; 
+}
+
+/* Reusing the common content width logic */
+.content { 
+    padding: 2rem; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}

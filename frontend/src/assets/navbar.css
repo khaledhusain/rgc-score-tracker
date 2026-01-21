@@ -1,0 +1,119 @@
+/* --- GLOBAL NAVBAR --- */
+.navbar {
+  background: #1e3c72;
+  color: white;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 50;
+}
+
+/* Left */
+.nav-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+/* Center */
+.nav-center {
+  display: flex;
+  gap: 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-link {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav-link:hover { color: white; }
+.nav-link.active { color: white; }
+
+/* Right - Profile Menu */
+.profile-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+  padding: 4px;
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+
+.profile-menu:hover { background: rgba(255,255,255,0.1); }
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  background: white;
+  color: #1e3c72;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.profile-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+/* Dropdown */
+.dropdown-content {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 160px;
+  padding: 0.5rem 0;
+  border: 1px solid #eee;
+  overflow: hidden;
+  animation: fadeIn 0.1s ease;
+}
+
+.dd-item {
+  display: block;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.dd-item:hover { background: #f5f5f5; }
+.dd-item.logout { color: #d32f2f; }
+.dd-divider { height: 1px; background: #eee; margin: 4px 0; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Tweak */
+@media (max-width: 700px) {
+  .nav-center { display: none; }
+  .profile-name { display: none; }
+}

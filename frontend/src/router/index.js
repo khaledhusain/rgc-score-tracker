@@ -6,6 +6,7 @@ import Register from '../views/Register.vue';
 import RoundHistory from '../views/RoundHistory.vue';
 import RoundEntry from '../views/RoundEntry.vue';
 import RoundDetail from '../views/RoundDetail.vue';
+import Profile from '../views/Profile.vue';
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
     path: '/round/:roundId',
     name: 'RoundDetail',
     component: RoundDetail,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
     meta: { requiresAuth: true },
   },
 ];

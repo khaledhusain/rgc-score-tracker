@@ -114,3 +114,13 @@ exports.get_user_by_id = (req, res) => {
     return res.status(200).json(user);
   });
 };
+
+// Get current authenticated user info
+exports.getMyInfo = (req, res) => {
+  const userId = req.authenticatedUserID;
+  users.getUserById(userId, (err, user) => {
+    if (err) return res.status(500).json({ error_message: 'Server error' });
+    if (!user) return res.status(404).json({ error_message: 'User not found' });
+    res.json(user);
+  });
+};

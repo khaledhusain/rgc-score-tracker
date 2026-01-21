@@ -13,4 +13,7 @@ module.exports = function(app) {
   
   // Get user by ID
   app.get('/user/:user_id', users.get_user_by_id);
+
+  // Get my info
+  app.get('/my/info', authenticate, users.getMyInfo);
 };
