@@ -138,37 +138,22 @@
                 class="round-grid-card"
                 @click="goToRound(round.id)"
             >
-                <div class="rg-header">
-                    <span class="rg-course">Royal Golf Club</span>
+                <div class="rg-left">
                     <span class="rg-date">{{ formatDate(round.date) }}</span>
-                </div>
-                
-                <div class="rg-main">
-                    <div class="rg-score-box">
-                        <!-- Show total score -->
-                        <span class="rg-score">{{ round.total_score }}</span>
-                        <!-- Show (9) or (18) -->
-                        <span class="rg-holes-sub">({{ round.holes_played }})</span>
-                        
-                        <!-- Show Pace if 9 holes -->
-                        <span v-if="round.holes_played === 9" class="rg-pace">
-                            Pace: {{ round.total_score * 2 }}
-                        </span>
-                    </div>
-                    <div class="rg-meta">
-                        <div v-if="round.total_putts">{{ round.total_putts }} Putts</div>
-                    </div>
-                </div>
-
-                <div class="rg-footer">
-                    <!-- Tee Color from DB -->
+                    <span class="rg-course">Royal Golf Club</span>
+                    <span class="rg-holes-par">{{ round.holes_played }} HOLES · PAR {{ getPar(round.holes_played) }}</span>
                     <span class="rg-tee" :class="getTeeClass(round.tee_name)">
                         {{ round.tee_name || 'Standard' }} Tees
                     </span>
-                    
-                    <!-- Status check -->
-                    <span class="rg-status" :class="round.status">
-                        {{ round.status === 'completed' ? 'Final' : 'Active' }}
+                </div>
+                <div class="rg-right">
+                    <span class="rg-score">{{ round.total_score }}</span>
+                    <span
+                        v-if="round.status === 'completed'"
+                        class="rg-to-par"
+                        :class="getToParClass(round)"
+                    >
+                        {{ formatToPar(round) }}
                     </span>
                 </div>
             </div>
@@ -290,9 +275,30 @@ const getTeeClass = (name) => {
     return `tee-${name.toLowerCase()}`;
 };
 
+const getPar = (holesPlayed) => (holesPlayed === 9 ? 36 : 72);
+
+const getScoreToParDiff = (round) => {
+    if (!round || round.status !== 'completed') return null;
+    return round.total_score - getPar(round.holes_played);
+};
+
+const formatToPar = (round) => {
+    const diff = getScoreToParDiff(round);
+    if (diff === null) return '';
+    return diff > 0 ? `+${diff}` : diff === 0 ? 'E' : String(diff);
+};
+
+const getToParClass = (round) => {
+    const diff = getScoreToParDiff(round);
+    if (diff === null) return '';
+    if (diff < 0) return 'under';
+    if (diff > 0) return 'over';
+    return 'even';
+};
+
 const getScoreToPar = (score) => {
     if(!score) return '-';
-    const diff = score - 72; // Assuming par 72 for summary
+    const diff = score - 72;
     return diff > 0 ? `+${diff}` : diff === 0 ? 'E' : diff;
 };
 

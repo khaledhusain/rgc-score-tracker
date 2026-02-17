@@ -99,7 +99,9 @@
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
     gap: 1rem;
 }
 .round-grid-card:hover {
@@ -107,28 +109,44 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.08);
     border-color: #1e3c72;
 }
-.rg-header { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; }
-.rg-date { font-weight: 600; }
-.rg-main { display: flex; justify-content: space-between; align-items: center; }
-.rg-score-box { display: flex; flex-direction: column; }
-.rg-score { font-size: 2.2rem; font-weight: 800; color: #333; line-height: 1; }
-.rg-par-rel { font-size: 0.9rem; color: #666; font-weight: 600; }
-.rg-meta { text-align: right; font-size: 0.9rem; color: #555; line-height: 1.4; }
-.rg-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-top: auto; border-top: 1px solid #f9f9f9; padding-top: 0.5rem; }
-.rg-tee { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-.rg-status { background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
 
-/* Tee Colors */
+.rg-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+}
+.rg-date { font-size: 0.9rem; color: #888; font-weight: 500; }
+.rg-course { font-size: 1.05rem; font-weight: 700; color: #1a472a; }
+.rg-holes-par { font-size: 0.85rem; color: #888; }
+.rg-tee { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.25rem; }
+
+.rg-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.rg-score { font-size: 2.2rem; font-weight: 800; color: #000; line-height: 1; }
+.rg-to-par {
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    min-width: 2.5rem;
+    text-align: center;
+}
+.rg-to-par.under { background: #22c55e; color: white; }
+.rg-to-par.over { background: #dc2626; color: white; }
+.rg-to-par.even { background: #94a3b8; color: white; }
+
+/* Tee Colors (only tee text is colored) */
 .tee-black { color: #000; }
 .tee-gold { color: #d4a017; }
 .tee-blue { color: #1e3c72; }
-.tee-white { color: #999; }
+.tee-white { color: #64748b; }
 .tee-red { color: #d32f2f; }
-
-.rg-holes-sub { font-size: 1rem; color: #777; font-weight: 600; margin-left: 6px; }
-.rg-pace { font-size: 0.8rem; color: #999; margin-top: 4px; display: block; }
-.rg-status.completed { background: #e8f5e9; color: #2e7d32; }
-.rg-status.in_progress { background: #fff3e0; color: #ef6c00; }
 
 /* Layout for Chart + Leaks */
 .dashboard-mid-row {
