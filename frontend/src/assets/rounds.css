@@ -492,7 +492,7 @@ textarea:focus {
 }
 
 .icon-btn:hover {
-    background: #fafafa; /* Very subtle hover */
+    background: #fafafa;
     border-radius: 4px;
 }
 
@@ -585,70 +585,67 @@ textarea:focus {
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* No fixed height here, let the content define it */
 }
 
 /* The actual input needs to be transparent and centered inside the shape */
 .score-input {
-    width: 40px;   /* Slightly larger */
-    height: 40px;  /* Perfectly square */
+    width: 40px;
+    height: 40px;
     text-align: center;
-    padding: 0;    /* Crucial for centering */
-    border: 3px solid transparent; /* Reserve space for border so text doesn't jump */
+    padding: 0;
+    border: 3px solid transparent;
     background: transparent;
     font-size: 1.2rem;
     font-weight: 800;
     cursor: text;
     display: block;
     box-sizing: border-box;
-    margin: 4px; /* Margin to prevent double-borders from clipping */
+    margin: 4px;
     
     /* Font settings for vertical centering */
     font-family: inherit;
-    line-height: normal; /* Reset line height */
+    line-height: normal;
 }
 
 /* Hide focus outline but keep the bottom border to show it's active */
 .score-input:focus {
     outline: none;
     border-bottom: 3px solid #1e3c72;
-    border-radius: 0 !important; /* Reset radius on focus */
+    border-radius: 0 !important;
 }
 
 /* --- SHAPES --- */
 
-/* Birdie (1 under) - Thick Red Circle */
+/* Birdie */
 .score-under {
-    border: 3px solid #d32f2f; /* Thicker */
+    border: 3px solid #d32f2f;
     border-radius: 50%;
     color: #d32f2f;
 }
 
-/* Eagle (2+ under) - Red Circle with GAP */
+/* Eagle */
 .score-double-under {
-    border: 3px solid #d32f2f; /* Inner Ring */
+    border: 3px solid #d32f2f;
     border-radius: 50%;
     color: #d32f2f;
-    /* This creates the outer ring with a gap */
     outline: 3px solid #d32f2f;
-    outline-offset: 3px; /* The Gap size */
+    outline-offset: 3px;
 }
 
-/* Bogey (1 over) - Thick Blue Square */
+/* Bogey */
 .score-over {
-    border: 3px solid #1976d2; /* Thicker */
+    border: 3px solid #1976d2;
     border-radius: 0;
     color: #1976d2;
 }
 
-/* Double Bogey+ (2+ over) - Blue Square with GAP */
+/* Double Bogey+ */
 .score-double-over {
     border: 3px solid #1976d2; /* Inner Square */
     border-radius: 0;
     color: #1976d2;
-    /* This creates the outer square with a gap */
     outline: 3px solid #1976d2;
-    outline-offset: 3px; /* The Gap size */
+    outline-offset: 3px;
 }
 
 /* FIR Toggle Styles */
@@ -668,13 +665,13 @@ textarea:focus {
 }
 
 .fir-btn.hit {
-    background-color: #4caf50; /* Green for Hit */
+    background-color: #4caf50;
     border-color: #4caf50;
     color: white;
 }
 
 .fir-btn.miss {
-    background-color: #f44336; /* Red for Miss */
+    background-color: #f44336;
     border-color: #f44336;
     color: white;
 }
@@ -684,7 +681,6 @@ textarea:focus {
     font-size: 1.2rem;
 }
 
-/* Hide Spinner on Input Number */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
