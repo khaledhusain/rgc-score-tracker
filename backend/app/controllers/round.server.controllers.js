@@ -268,3 +268,130 @@ exports.getProfile = (req, res) => {
 
     }).catch(err => res.status(500).json({ error: err.message }));
 };
+
+exports.getProfile = async (req, res) => {
+  const userId = req.authenticatedUserID;
+  const db = require('../../database');
+
+  // Helper to run query as promise
+  const query = (sql, params = []) => new Promise((resolve, reject) => {
+      db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows));
+  });
+
+  try {
+      // 1. Get ALL Completed Rounds (Base Data)
+      // We fetch raw rows and compute in JS to avoid complex 5-way SQL joins
+      const rounds = await query(`
+          SELECT 
+              r.id, r.date, r.total_score, r.holes_played, r.tee_id,
+              (SELECT SUM(putts) FROM hole_scores WHERE round_id = r.id) as total_putts,
+              (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id AND strokes < par) as birdies,
+              (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id AND strokes = par) as pars,
+              (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id) as total_holes
+          FROM rounds r
+          WHERE r.user_id = ? AND r.status = 'completed'
+          ORDER BY r.date DESC
+      `, [userId]);
+
+      // 2. Get Advanced Hole Stats (For GIR/FIR)
+      const holeStats = await query(`
+          SELECT 
+              r.date, r.tee_id, hs.strokes, hs.putts, hs.par, hs.fairway_hit
+          FROM hole_scores hs
+          JOIN rounds r ON hs.round_id = r.id
+          WHERE r.user_id = ? AND r.status = 'completed'
+      `, [userId]);
+
+      // --- HELPER FUNCTIONS ---
+      
+      const filterByDays = (rows, days) => {
+          if (days === 'lifetime') return rows;
+          const cutoff = new Date();
+          cutoff.setDate(cutoff.getDate() - days);
+          return rows.filter(r => new Date(r.date) >= cutoff);
+      };
+
+      const calcStats = (roundSet, holeSet) => {
+          if (!roundSet.length) return null;
+
+          // 1. Avg Score
+          const totalScore = roundSet.reduce((sum, r) => sum + r.total_score, 0);
+          const avgScore = (totalScore / roundSet.length).toFixed(1);
+
+          // 2. Best Round (Lowest 18 hole score preferably, else raw lowest)
+          // Prioritize 18 hole rounds for "Best" to avoid a 9-hole 36 beating an 18-hole 72
+          const rounds18 = roundSet.filter(r => r.holes_played === 18);
+          const pool = rounds18.length > 0 ? rounds18 : roundSet;
+          const bestRound = Math.min(...pool.map(r => r.total_score));
+
+          // 3. Rounds Count
+          const roundsPlayed = roundSet.length;
+
+          // 4. "Big 3" Totals
+          const careerBirdies = roundSet.reduce((sum, r) => sum + r.birdies, 0);
+          const careerPars = roundSet.reduce((sum, r) => sum + r.pars, 0);
+          
+          // 5. Deep Dive Metrics
+          const totalHoles = roundSet.reduce((sum, r) => sum + r.total_holes, 0);
+          const avgPutts = (roundSet.reduce((sum, r) => sum + (r.total_putts || 0), 0) / roundsPlayed).toFixed(1);
+          
+          // GIR & FIR
+          let girHits = 0, girOpps = 0;
+          let firHits = 0, firOpps = 0;
+          
+          holeSet.forEach(h => {
+              // GIR: (Strokes - Putts) <= (Par - 2)
+              if (h.putts !== null) {
+                  girOpps++;
+                  if ((h.strokes - h.putts) <= (h.par - 2)) girHits++;
+              }
+              // FIR: Par > 3
+              if (h.par > 3 && h.fairway_hit !== null) {
+                  firOpps++;
+                  if (h.fairway_hit === 1) firHits++;
+              }
+          });
+
+          return {
+              avgScore,
+              bestRound,
+              roundsPlayed,
+              careerBirdies,
+              careerPars,
+              totalHoles,
+              avgPutts,
+              gir: girOpps ? Math.round((girHits / girOpps) * 100) : 0,
+              fir: firOpps ? Math.round((firHits / firOpps) * 100) : 0,
+              scoringAvg: (totalScore / roundsPlayed).toFixed(1) // Simplified +/- logic for now
+          };
+      };
+
+      // --- CONSTRUCT RESPONSE ---
+
+      // Sidebar Data (30/60/Life)
+      const sidebar = {
+          last30: calcStats(filterByDays(rounds, 30), filterByDays(holeStats, 30)) || {},
+          last60: calcStats(filterByDays(rounds, 60), filterByDays(holeStats, 60)) || {},
+          lifetime: calcStats(rounds, holeStats) || {}
+      };
+
+      // Main Tab Data (Grouped by Tee)
+      // IDs: 1=Black, 2=Gold, 3=Blue, 4=White, 5=Red
+      const tabs = {
+          all: calcStats(rounds, holeStats) || {},
+          black: calcStats(rounds.filter(r => r.tee_id === 1), holeStats.filter(h => h.tee_id === 1)) || {},
+          gold: calcStats(rounds.filter(r => r.tee_id === 2), holeStats.filter(h => h.tee_id === 2)) || {},
+          blue: calcStats(rounds.filter(r => r.tee_id === 3), holeStats.filter(h => h.tee_id === 3)) || {},
+          white: calcStats(rounds.filter(r => r.tee_id === 4), holeStats.filter(h => h.tee_id === 4)) || {},
+          red: calcStats(rounds.filter(r => r.tee_id === 5), holeStats.filter(h => h.tee_id === 5)) || {}
+      };
+
+      // Get Last played date
+      const lastPlayed = rounds.length > 0 ? rounds[0].date : null;
+
+      res.json({ sidebar, tabs, lastPlayed });
+
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
