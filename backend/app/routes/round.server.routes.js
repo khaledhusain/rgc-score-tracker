@@ -13,5 +13,5 @@ module.exports = function(app) {
   app.post('/debug/seed', authenticate, roundController.generateMockRounds);
   app.get('/my/stats', authenticate, roundController.getDashboardStats);
   app.get('/my/profile', authenticate, roundController.getProfile);
-  // app.get('/my/profile/v2', authenticate, roundController.getProfile);
+  app.get('/my/profile/v2', authenticate, roundController.getProfile);
 };
