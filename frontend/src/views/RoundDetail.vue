@@ -201,6 +201,7 @@ const COURSE_DATA = {
     18: [4, 6, 429, 411, 392, 349, 305]
 };
 const TEE_INDEX = { 'Black': 2, 'Gold': 3, 'Blue': 4, 'White': 5, 'Red': 6 };
+const TEE_NAMES = { 1: 'Gold', 2: 'Red', 3: 'Blue', 4: 'White', 5: 'Black' };
 
 const route = useRoute();
 const router = useRouter();
@@ -285,7 +286,11 @@ const fetchRound = async () => {
     const data = await rounds.getById(roundId);
     round.value = data;
     notes.value = data.notes || '';
-    if (route.query.tee) selectedTee.value = route.query.tee;
+    if (data.tee_id != null && TEE_NAMES[data.tee_id]) {
+      selectedTee.value = TEE_NAMES[data.tee_id];
+    } else if (route.query.tee) {
+      selectedTee.value = route.query.tee;
+    }
 
     const holesCount = data.holes_played || 18;
     holes.value = data.holes || [];
