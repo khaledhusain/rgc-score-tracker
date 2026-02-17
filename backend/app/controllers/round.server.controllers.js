@@ -194,9 +194,10 @@ exports.getDashboardStats = (req, res) => {
 
     Promise.all([p1, p2]).then(([rounds, holes]) => {
         const count = rounds.length;
-        
-        // Basic Stats
-        const totalScore = rounds.reduce((sum, r) => sum + (r.total_score || 0), 0);
+        const equivalent18 = (r) => (r.holes_played === 9 ? (r.total_score || 0) * 2 : (r.total_score || 0));
+
+        // Basic Stats (9-hole scores weighted ×2 for fair comparison with 18-hole)
+        const totalScore = rounds.reduce((sum, r) => sum + equivalent18(r), 0);
         const totalPutts = rounds.reduce((sum, r) => sum + (r.total_putts || 0), 0);
         
         // Leak Calculation
@@ -285,6 +286,7 @@ exports.getProfile = async (req, res) => {
           SELECT 
               r.id, r.date, r.total_score, r.holes_played, r.tee_id,
               (SELECT SUM(putts) FROM hole_scores WHERE round_id = r.id) as total_putts,
+              (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id AND (par - strokes) >= 2) as eagles,
               (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id AND strokes < par) as birdies,
               (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id AND strokes = par) as pars,
               (SELECT COUNT(*) FROM hole_scores WHERE round_id = r.id) as total_holes
@@ -311,26 +313,26 @@ exports.getProfile = async (req, res) => {
           return rows.filter(r => new Date(r.date) >= cutoff);
       };
 
+      const equivalent18 = (r) => (r.holes_played === 9 ? r.total_score * 2 : r.total_score);
+
       const calcStats = (roundSet, holeSet) => {
           if (!roundSet.length) return null;
 
-          // 1. Avg Score
-          const totalScore = roundSet.reduce((sum, r) => sum + r.total_score, 0);
+          // 1. Avg Score (9-hole ×2 so same weight as 18-hole)
+          const totalScore = roundSet.reduce((sum, r) => sum + equivalent18(r), 0);
           const avgScore = (totalScore / roundSet.length).toFixed(1);
 
-          // 2. Best Round (Lowest 18 hole score preferably, else raw lowest)
-          // Prioritize 18 hole rounds for "Best" to avoid a 9-hole 36 beating an 18-hole 72
-          const rounds18 = roundSet.filter(r => r.holes_played === 18);
-          const pool = rounds18.length > 0 ? rounds18 : roundSet;
-          const bestRound = Math.min(...pool.map(r => r.total_score));
+          // 2. Best Round (lowest 18-hole equivalent)
+          const bestRound = Math.min(...roundSet.map(r => equivalent18(r)));
 
           // 3. Rounds Count
           const roundsPlayed = roundSet.length;
 
-          // 4. "Big 3" Totals
+          // 4. "Big 3" Totals (Pars, Birdies, Eagles)
+          const careerEagles = roundSet.reduce((sum, r) => sum + (r.eagles || 0), 0);
           const careerBirdies = roundSet.reduce((sum, r) => sum + r.birdies, 0);
           const careerPars = roundSet.reduce((sum, r) => sum + r.pars, 0);
-          
+
           // 5. Deep Dive Metrics
           const totalHoles = roundSet.reduce((sum, r) => sum + r.total_holes, 0);
           const avgPutts = (roundSet.reduce((sum, r) => sum + (r.total_putts || 0), 0) / roundsPlayed).toFixed(1);
@@ -356,6 +358,7 @@ exports.getProfile = async (req, res) => {
               avgScore,
               bestRound,
               roundsPlayed,
+              careerEagles,
               careerBirdies,
               careerPars,
               totalHoles,
