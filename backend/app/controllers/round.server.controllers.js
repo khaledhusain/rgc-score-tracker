@@ -368,10 +368,10 @@ exports.getProfile = async (req, res) => {
 
       // --- CONSTRUCT RESPONSE ---
 
-      // Sidebar Data (30/60/Life)
+      // Sidebar Data (30/90/Life)
       const sidebar = {
           last30: calcStats(filterByDays(rounds, 30), filterByDays(holeStats, 30)) || {},
-          last60: calcStats(filterByDays(rounds, 60), filterByDays(holeStats, 60)) || {},
+          last90: calcStats(filterByDays(rounds, 90), filterByDays(holeStats, 90)) || {},
           lifetime: calcStats(rounds, holeStats) || {}
       };
 

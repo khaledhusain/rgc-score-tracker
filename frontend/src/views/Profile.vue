@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <!-- Rows (30/60/Life) -->
+            <!-- Rows (30/90/Life) -->
             <div class="profile-season-block">
                 <div class="profile-season-header">LAST 30 DAYS</div>
                 <div class="profile-stat-row">
@@ -38,19 +38,19 @@
             </div>
 
             <div class="profile-season-block">
-                <div class="profile-season-header">LAST 60 DAYS</div>
+                <div class="profile-season-header">LAST 90 DAYS</div>
                 <div class="profile-stat-row">
                     <div class="profile-mini-stat">
                         <div class="profile-mini-label">Avg Score</div>
-                        <div class="profile-mini-val">{{ sidebar.last60.avgScore || '-' }}</div>
+                        <div class="profile-mini-val">{{ sidebar.last90.avgScore || '-' }}</div>
                     </div>
                     <div class="profile-mini-stat">
                         <div class="profile-mini-label">Best Round</div>
-                        <div class="profile-mini-val">{{ sidebar.last60.bestRound || '-' }}</div>
+                        <div class="profile-mini-val">{{ sidebar.last90.bestRound || '-' }}</div>
                     </div>
                     <div class="profile-mini-stat">
                         <div class="profile-mini-label">Rounds</div>
-                        <div class="profile-mini-val">{{ sidebar.last60.roundsPlayed || '-' }}</div>
+                        <div class="profile-mini-val">{{ sidebar.last90.roundsPlayed || '-' }}</div>
                     </div>
                 </div>
             </div>
@@ -147,7 +147,7 @@ const loading = ref(true);
 const activeTab = ref('all');
 const handicap = ref('-');
 const lastPlayed = ref(null);
-const sidebar = ref({ last30: {}, last60: {}, lifetime: {} });
+const sidebar = ref({ last30: {}, last90: {}, lifetime: {} });
 const tabData = ref({});
 const userInitials = ref('G');
 
@@ -170,12 +170,13 @@ const fetchData = async () => {
             user.getInfo()
         ]);
 
-        sidebar.value = prof.sidebar;
-        tabData.value = prof.tabs;
-        lastPlayed.value = prof.lastPlayed;
-        handicap.value = hc.handicap;
-        userInitials.value = (info.first_name[0] + (info.last_name[0] || '')).toUpperCase();
-        
+        sidebar.value = prof.sidebar || { last30: {}, last90: {}, lifetime: {} };
+        tabData.value = prof.tabs || {};
+        lastPlayed.value = prof.lastPlayed ?? null;
+        handicap.value = hc?.handicap ?? '-';
+        const first = info?.first_name?.[0] || '';
+        const last = info?.last_name?.[0] || '';
+        userInitials.value = (first + last).toUpperCase() || '?';
     } catch (e) {
         console.error(e);
     } finally {
