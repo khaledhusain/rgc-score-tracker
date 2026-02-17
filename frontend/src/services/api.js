@@ -71,6 +71,7 @@ export const rounds = {
     apiCall('POST', '/rounds', { courseId, date, holesPlayed, teeColor }),
 
   getAll: () => apiCall('GET', '/rounds'),
+  getProfileV2: () => apiCall('GET', '/my/profile/v2'),
   getById: (roundId) => apiCall('GET', `/rounds/${roundId}`),
   updateHoleScore: (roundId, holeNumber, strokes, par, putts, notes, fairwayHit) =>
     apiCall('PATCH', `/rounds/${roundId}/hole/${holeNumber}`, {
