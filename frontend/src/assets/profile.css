@@ -76,6 +76,7 @@
     flex: 1;
     transition: all 0.2s;
 }
+.profile-tab:last-child { border-top-right-radius: 10; }
 .profile-tab:hover { background: #cbd5e1; }
 .profile-tab.active { background: #1e3c72; color: white; }
 
@@ -85,7 +86,7 @@
     color: white;
     display: flex;
     padding: 2rem 0;
-    border-radius: 0 8px 0 0;
+    border-radius: 0;
 }
 .profile-big-box { flex: 1; text-align: center; border-right: 1px solid rgba(255,255,255,0.2); }
 .profile-big-box:last-child { border-right: none; }

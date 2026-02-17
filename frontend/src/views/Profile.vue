@@ -89,19 +89,19 @@
                 </button>
             </div>
 
-            <!-- Big 3 Header -->
+            <!-- Big 3 Header: Pars, Birdies, Eagles -->
             <div class="profile-big-stats">
-                <div class="profile-big-box">
-                    <div class="profile-big-val">{{ activeData.careerBirdies || 0 }}</div>
-                    <div class="profile-big-label">CAREER BIRDIES</div>
-                </div>
                 <div class="profile-big-box">
                     <div class="profile-big-val">{{ activeData.careerPars || 0 }}</div>
                     <div class="profile-big-label">CAREER PARS</div>
                 </div>
                 <div class="profile-big-box">
-                    <div class="profile-big-val">{{ activeData.roundsPlayed || 0 }}</div>
-                    <div class="profile-big-label">TOTAL ROUNDS</div>
+                    <div class="profile-big-val">{{ activeData.careerBirdies || 0 }}</div>
+                    <div class="profile-big-label">CAREER BIRDIES</div>
+                </div>
+                <div class="profile-big-box">
+                    <div class="profile-big-val">{{ activeData.careerEagles || 0 }}</div>
+                    <div class="profile-big-label">CAREER EAGLES</div>
                 </div>
             </div>
 
@@ -112,7 +112,7 @@
                     <span class="profile-list-val">{{ activeData.totalHoles || 0 }}</span>
                 </div>
                 <div class="profile-list-row alt">
-                    <span class="profile-list-label">Completed Rounds</span>
+                    <span class="profile-list-label">Total Rounds</span>
                     <span class="profile-list-val">{{ activeData.roundsPlayed || 0 }}</span>
                 </div>
                 <div class="profile-list-row">
