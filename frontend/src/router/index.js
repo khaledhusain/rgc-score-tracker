@@ -7,6 +7,8 @@ import RoundHistory from '../views/RoundHistory.vue';
 import RoundEntry from '../views/RoundEntry.vue';
 import RoundDetail from '../views/RoundDetail.vue';
 import Profile from '../views/Profile.vue';
+import CourseHoleByHole from '../views/CourseHoleByHole.vue';
+import CourseScorecard from '../views/CourseScorecard.vue';
 
 const routes = [
   {
@@ -38,6 +40,23 @@ const routes = [
     name: 'RoundDetail',
     component: RoundDetail,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/course',
+    redirect: '/course/hole-by-hole',
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/course/hole-by-hole',
+    name: 'CourseHoleByHole',
+    component: CourseHoleByHole,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: '/course/scorecard',
+    name: 'CourseScorecard',
+    component: CourseScorecard,
+    meta: { requiresAuth: false },
   },
   {
     path: '/profile',

@@ -11,6 +11,8 @@ import './assets/dashboard.css'
 import './assets/entry.css'
 import './assets/navbar.css'
 import './assets/profile.css'
+import './assets/course-hole-by-hole.css'
+import './assets/course-scorecard.css'
 
 const app = createApp(App)
 
