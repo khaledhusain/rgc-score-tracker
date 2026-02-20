@@ -10,11 +10,16 @@
     <!-- 2. Center Links -->
     <div class="nav-center">
       <router-link to="/" class="nav-link" active-class="active">Dashboard</router-link>
-      <div class="nav-dropdown" ref="courseDropdownRef" @click.stop="toggleCourseDropdown">
-        <button type="button" class="nav-link nav-link-trigger" :class="{ active: isCourseActive }">
+      <div
+        class="nav-dropdown"
+        ref="courseDropdownRef"
+        @mouseenter="onCourseMouseEnter"
+        @mouseleave="onCourseMouseLeave"
+      >
+        <span class="nav-link nav-link-trigger" :class="{ active: isCourseActive }">
           Course
           <span class="nav-arrow">▼</span>
-        </button>
+        </span>
         <div class="nav-dropdown-content" v-show="courseOpen">
           <router-link to="/course/hole-by-hole" class="nav-dd-item" @click="courseOpen = false">Hole by Hole</router-link>
           <router-link to="/course/scorecard" class="nav-dd-item" @click="courseOpen = false">Scorecard</router-link>
@@ -52,8 +57,13 @@ const isOpen = ref(false);
 const dropdownRef = ref(null);
 const courseOpen = ref(false);
 const courseDropdownRef = ref(null);
+const courseOpenTimeout = ref(null);
+const courseCloseTimeout = ref(null);
 const firstName = ref('Golfer');
 const lastName = ref('');
+
+const COURSE_OPEN_DELAY = 140;
+const COURSE_CLOSE_DELAY = 140;
 
 const initials = computed(() => {
   const f = firstName.value[0] || '';
@@ -62,7 +72,28 @@ const initials = computed(() => {
 });
 
 const toggleDropdown = () => isOpen.value = !isOpen.value;
-const toggleCourseDropdown = () => courseOpen.value = !courseOpen.value;
+
+function onCourseMouseEnter() {
+  if (courseCloseTimeout.value) {
+    clearTimeout(courseCloseTimeout.value);
+    courseCloseTimeout.value = null;
+  }
+  courseOpenTimeout.value = setTimeout(() => {
+    courseOpen.value = true;
+    courseOpenTimeout.value = null;
+  }, COURSE_OPEN_DELAY);
+}
+
+function onCourseMouseLeave() {
+  if (courseOpenTimeout.value) {
+    clearTimeout(courseOpenTimeout.value);
+    courseOpenTimeout.value = null;
+  }
+  courseCloseTimeout.value = setTimeout(() => {
+    courseOpen.value = false;
+    courseCloseTimeout.value = null;
+  }, COURSE_CLOSE_DELAY);
+}
 
 const isCourseActive = computed(() => {
   const name = router.currentRoute.value?.name;
@@ -103,5 +134,9 @@ onMounted(() => {
   fetchUser();
 });
 
-onUnmounted(() => document.removeEventListener('click', closeDropdown));
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown);
+  if (courseOpenTimeout.value) clearTimeout(courseOpenTimeout.value);
+  if (courseCloseTimeout.value) clearTimeout(courseCloseTimeout.value);
+});
 </script>

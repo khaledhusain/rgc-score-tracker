@@ -76,7 +76,7 @@
   padding: 0.5rem 0;
   border: 1px solid #eee;
   z-index: 100;
-  animation: fadeIn 0.12s ease;
+  animation: fadeInDrop 0.12s ease;
 }
 .nav-dropdown-content::before {
   content: '';
@@ -173,6 +173,12 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Preserve translateX(-50%) so Course dropdown stays centered under trigger */
+@keyframes fadeInDrop {
+  from { opacity: 0; transform: translateX(-50%) translateY(-5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* Mobile Tweak */
