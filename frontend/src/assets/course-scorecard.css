@@ -1,0 +1,14 @@
+/* Course Scorecard page */
+.course-scorecard-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+.course-scorecard-page .content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+.course-scorecard-page .content h2 {
+  color: #1e3c72;
+  margin-bottom: 0.5rem;
+}
