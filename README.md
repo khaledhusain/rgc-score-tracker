@@ -1,6 +1,8 @@
 # Royal Golf Club Performance Tracker
 
-**Description:** A golf performance analytics platform for logging rounds, tracking scoring trends, and surfacing actionable statistics - built around the course data and workflow of **Royal Golf Club Bahrain**.
+A golf performance analytics platform for logging rounds, tracking scoring trends, and surfacing actionable statistics.
+
+Built around the course data and workflow of **Royal Golf Club Bahrain**.
 
 ---
 
@@ -17,7 +19,7 @@ The platform is designed around **golf performance analysis and statistics track
 ## Key Features
 
 - **Round tracking & score history**: Create rounds, enter scores hole-by-hole, finalize, view history, and open past rounds for review or edits
-- **Career performance dashboard**: Handicap index, average score, putts per round, and time-filtered views (30 / 90 / 365 days)
+- **Career performance dashboard**: Handicap index, average score, putts per round, and time-filtered views (30/90/All time)
 - **Lifetime & period statistics**: Profile sidebar for last 30 days, last 90 days, and lifetime (avg score, best round, rounds played)
 - **Tee-based performance tracking**: Filter career stats by tee (Black, Gold, Blue, White, Red) on the profile page
 - **Score aggregation & analytics**: Server-side calculation of GIR%, FIR%, stroke leaks (3-putts, double bogeys+, missed fairways), and scoring totals
@@ -50,19 +52,17 @@ The platform is designed around **golf performance analysis and statistics track
 
 ---
 
-## Screenshots
-
-All previews use a consistent width for layout. Assets live in [`screenshots/`](screenshots/).
+## Screenshot
 
 ### Dashboard
 
-Performance hub after login: handicap index, average score, putts per round, stroke-leaks breakdown (3-putts, doubles+, missed fairways), rotating tips, and time filters (30 / 90 / all time). Score trend chart is planned; the slot is reserved on this view.
+Performance dashboard showing handicap, scoring stats, putting performance, stroke leak analysis, and round filters.
 
 <img src="screenshots/dashboard.png" width="800" alt="Dashboard with stat cards, stroke leaks, and filters" />
 
 ### Career Profile
 
-Long-term view with handicap index, last-round date, and side-by-side buckets for last 30 days, last 90 days, and lifetime. Main panel supports tee filters (All, Black, Gold, Blue, White, Red) plus career pars, birdies, eagles, GIR%, and FIR%.
+Career profile showing long-term golf statistics, handicap tracking, tee-based filters, and lifetime performance metrics.
 
 <img src="screenshots/profile.png" width="800" alt="Career profile with period stats and tee tabs" />
 
@@ -80,7 +80,7 @@ Start-round flow at `/new-round`: pick date, 9 or 18 holes, and tee, then enter 
 
 ### Hole by Hole (coming soon)
 
-Course explorer for Royal Golf Club: par, handicap index, and yardages per tee for each hole. The full interactive hole-by-hole experience is **coming soon**; the current build is a reference layout ahead of richer content.
+Course explorer for Royal Golf Club: par, handicap index, and yardages per tee for each hole.
 
 <img src="screenshots/hole-by-hole.png" width="800" alt="Hole-by-hole course reference (coming soon)" />
 
@@ -293,7 +293,7 @@ cd backend && npm start
 - **Cloud deployment** (containerized API + managed database)
 - **Social & comparison** features: leaderboards, shared rounds, friend stats
 - Full **scorecard PDF-style view** and Pinia-based global state
-- Eclectic / personal-best-per-hole display (backend query exists; not yet in UI)
+- Eclectic/personal-best-per-hole display (backend query exists; not yet in UI)
 
 ---
 
