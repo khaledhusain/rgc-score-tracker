@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--rgc-page);
 }
 
 .navbar {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, var(--rgc-green) 0%, var(--rgc-green-light) 100%);
   color: white;
   padding: 1.5rem 2rem;
   display: flex;
@@ -39,12 +39,12 @@
 }
 
 .btn-primary {
-  background: white;
-  color: #1e3c72;
+  background: var(--rgc-cream);
+  color: var(--rgc-green);
 }
 
 .btn-primary:hover {
-  background: #f0f0f0;
+  background: var(--rgc-cream-hover);
 }
 
 .btn-secondary {
@@ -96,7 +96,7 @@
 .empty-state {
   text-align: center;
   padding: 3rem;
-  background: white;
+  background: var(--rgc-cream);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
@@ -114,13 +114,13 @@
 }
 
 .round-card {
-  background: white;
+  background: var(--rgc-cream);
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   transition: all 0.2s;
-  border-left: 4px solid #1e3c72;
+  border-left: 4px solid var(--rgc-green);
 }
 
 .round-card:hover {
@@ -137,7 +137,7 @@
 
 .round-header h3 {
   margin: 0;
-  color: #1e3c72;
+  color: var(--rgc-green);
   font-size: 1.2rem;
 }
 
@@ -172,7 +172,7 @@
 }
 
 .round-detail {
-  background: white;
+  background: var(--rgc-cream);
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -183,13 +183,13 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--rgc-cream-hover);
   padding-bottom: 1rem;
 }
 
 .round-detail-header h2 {
   margin: 0;
-  color: #1e3c72;
+  color: var(--rgc-green);
 }
 
 .round-date {
@@ -217,7 +217,7 @@
 .total-score {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1e3c72;
+  color: var(--rgc-green);
   margin: 0;
 }
 
@@ -249,20 +249,21 @@
 .strokes-input {
   flex: 1;
   padding: 0.75rem;
-  border: 2px solid #ddd;
+  border: 2px solid #d4cfc4;
   border-radius: 4px;
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
+  background-color: var(--rgc-cream-input);
 }
 
 .strokes-input:focus {
   outline: none;
-  border-color: #1e3c72;
+  border-color: var(--rgc-green);
 }
 
 .strokes-input:disabled {
-  background: #f5f5f5;
+  background: var(--rgc-page);
   color: #999;
   cursor: not-allowed;
 }
@@ -278,21 +279,21 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #f0f0f0;
+  border-top: 2px solid var(--rgc-cream-hover);
 }
 
 .actions .btn-primary {
   flex: 1;
-  background: #1e3c72;
+  background: var(--rgc-green);
   color: white;
 }
 
 .actions .btn-primary:hover {
-  background: #2a5298;
+  background: var(--rgc-green-light);
 }
 
 .entry-form {
-  background: white;
+  background: var(--rgc-cream);
   padding: 2rem;
   border-radius: 8px;
   max-width: 600px;
@@ -314,17 +315,19 @@
 .entry-form select {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid #d4cfc4;
   border-radius: 4px;
   font-size: 1rem;
   box-sizing: border-box;
+  background-color: var(--rgc-cream-input);
 }
 
 .entry-form input:focus,
 .entry-form select:focus {
   outline: none;
-  border-color: #1e3c72;
-  box-shadow: 0 0 4px rgba(30, 60, 114, 0.2);
+  border-color: var(--rgc-green);
+  background-color: var(--rgc-cream-input);
+  box-shadow: 0 0 4px rgba(26, 92, 56, 0.2);
 }
 
 .radio-group {
@@ -348,14 +351,14 @@
 
 .entry-form button {
   width: 100%;
-  background: #1e3c72;
+  background: var(--rgc-green);
   color: white;
   padding: 0.75rem;
   margin-top: 1rem;
 }
 
 .entry-form button:hover:not(:disabled) {
-  background: #2a5298;
+  background: var(--rgc-green-light);
 }
 
 .entry-form button:disabled {
@@ -377,13 +380,13 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border-color: #1e3c72;
+  border-color: var(--rgc-green);
   box-shadow: 0 0 4px rgba(30, 60, 114, 0.2);
 }
 
 .handicap-display {
   background: #f0f7ff;
-  border-left: 4px solid #1e3c72;
+  border-left: 4px solid var(--rgc-green);
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 2rem;
@@ -398,7 +401,7 @@ textarea:focus {
 .handicap-display .value {
   font-size: 2rem;
   font-weight: 700;
-  color: #1e3c72;
+  color: var(--rgc-green);
 }
 
 .handicap-display .note {
@@ -409,7 +412,7 @@ textarea:focus {
 
 /* Appended Scorecard Styles */
 .scorecard-wrapper {
-    background: white;
+    background: var(--rgc-cream);
     border: 1px solid #eee;
     margin-bottom: 2rem;
     font-size: 0.9rem;
@@ -428,7 +431,7 @@ textarea:focus {
 }
 
 .scorecard-header-row {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
     font-weight: bold;
 }
@@ -436,7 +439,7 @@ textarea:focus {
 /* Hole Number */
 .col-hole { 
     font-weight: 900;
-    color: #1e3c72; 
+    color: var(--rgc-green); 
     font-size: 1.1rem;
 }
 
@@ -492,7 +495,7 @@ textarea:focus {
 }
 
 .icon-btn:hover {
-    background: #fafafa;
+    background: var(--rgc-page);
     border-radius: 4px;
 }
 
@@ -504,13 +507,13 @@ textarea:focus {
 }
 
 .total-row {
-    background: #f9f9f9;
+    background: var(--rgc-cream-muted);
     font-weight: bold;
     border-top: 2px solid #ddd;
 }
 
 .notes-display {
-    background: #f9f9f9;
+    background: var(--rgc-cream-muted);
     padding: 1rem;
     border-radius: 4px;
     border: 1px solid #eee;
@@ -529,7 +532,7 @@ textarea:focus {
 }
 
 .modal-content {
-    background: white;
+    background: var(--rgc-cream);
     padding: 2rem;
     border-radius: 8px;
     width: 90%;
@@ -539,7 +542,7 @@ textarea:focus {
 
 .modal-content h3 {
     margin-top: 0;
-    color: #1e3c72;
+    color: var(--rgc-green);
     text-align: center;
     margin-bottom: 1.5rem;
 }
@@ -556,15 +559,15 @@ textarea:focus {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
-    background: white;
+    background: var(--rgc-cream);
     border-radius: 4px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
 }
 
-.putt-btn:hover { background: #f0f0f0; }
-.putt-btn.selected { background: #1e3c72; color: white; border-color: #1e3c72; }
+.putt-btn:hover { background: var(--rgc-cream-hover); }
+.putt-btn.selected { background: var(--rgc-green); color: white; border-color: var(--rgc-green); }
 
 .hole-note-input {
     width: 100%;
@@ -610,7 +613,7 @@ textarea:focus {
 /* Hide focus outline but keep the bottom border to show it's active */
 .score-input:focus {
     outline: none;
-    border-bottom: 3px solid #1e3c72;
+    border-bottom: 3px solid var(--rgc-green);
     border-radius: 0 !important;
 }
 
@@ -654,7 +657,7 @@ textarea:focus {
     height: 30px;
     border-radius: 50%;
     border: 1px solid #ddd;
-    background: white;
+    background: var(--rgc-cream);
     cursor: pointer;
     font-size: 0.8rem;
     display: flex;

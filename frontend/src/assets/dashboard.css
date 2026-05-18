@@ -5,10 +5,10 @@
     align-items: center;
     margin-bottom: 2rem;
 }
-.dashboard-header h2 { margin: 0; font-size: 2rem; color: #1e3c72; }
+.dashboard-header h2 { margin: 0; font-size: 2rem; color: var(--rgc-green); }
 
 .time-filters {
-    background: white;
+    background: var(--rgc-cream);
     padding: 4px;
     border-radius: 8px;
     border: 1px solid #ddd;
@@ -25,7 +25,7 @@
     transition: all 0.2s;
 }
 .filter-btn.active {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
 }
 
@@ -43,33 +43,33 @@
 }
 
 .stat-card {
-    background: white;
+    background: var(--rgc-cream);
     padding: 2rem 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
+    border: 1px solid #ebe6dc;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .card-label { font-size: 0.9rem; color: #666; font-weight: 600; margin-bottom: 0.5rem; }
-.card-value { font-size: 2.5rem; font-weight: 800; color: #1e3c72; line-height: 1; }
+.card-value { font-size: 2.5rem; font-weight: 800; color: var(--rgc-green); line-height: 1; }
 .card-sub { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
 
 /* Chart Area */
 .chart-container {
-    background: white;
+    background: var(--rgc-cream);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    border: 1px solid #f0f0f0;
+    border: 1px solid #ebe6dc;
     min-height: 250px;
 }
 .chart-header h3 { margin: 0 0 1rem 0; color: #333; }
 .chart-box {
     height: 200px;
-    background: #fafafa;
+    background: var(--rgc-cream-muted);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -91,7 +91,7 @@
     gap: 1.5rem;
 }
 .round-grid-card {
-    background: white;
+    background: var(--rgc-cream);
     border-radius: 12px;
     padding: 1.25rem;
     border: 1px solid #eee;
@@ -107,7 +107,7 @@
 .round-grid-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-    border-color: #1e3c72;
+    border-color: var(--rgc-green);
 }
 
 .rg-left {
@@ -144,7 +144,7 @@
 /* Tee Colors (only tee text is colored) */
 .tee-black { color: #000; }
 .tee-gold { color: #d4a017; }
-.tee-blue { color: #1e3c72; }
+.tee-blue { color: #2563eb; }
 .tee-white { color: #64748b; }
 .tee-red { color: #d32f2f; }
 
@@ -160,53 +160,14 @@
 .chart-box { flex: 1; }
 
 .leaks-container {
-    background: white;
+    background: var(--rgc-cream);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
+    border: 1px solid #ebe6dc;
     display: flex;
     flex-direction: column;
     gap: 1.5rem; 
-}
-
-.takeaway-box {
-    background: #0f172a;
-    border-left: none !important;
-    padding: 0 1.5rem;
-    border-radius: 50px;
-    margin-top: 0.5rem;
-    cursor: pointer;
-    user-select: none;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.takeaway-box p { 
-    margin: 0; 
-    font-size: 0.95rem; 
-    color: #e2e8f0;
-    line-height: 1.4; 
-    text-align: center;
-    font-style: italic;
-    transition: opacity 0.5s ease;
-}
-
-.takeaway-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background: #10b981;
-    transition: width 0.18s ease-out;
-}
-
-.takeaway-progress.resetting {
-    transition: none;
 }
 
 .leaks-header {
@@ -215,33 +176,59 @@
     align-items: baseline;
     margin-bottom: 1.5rem;
 }
-.leaks-header h3 { margin: 0; color: #1e3c72; font-size: 1.2rem; }
+.leaks-header h3 { margin: 0; color: var(--rgc-green); font-size: 1.2rem; }
 .leaks-sub { color: #888; font-size: 0.8rem; }
 
 /* Progress Bars */
 .leak-item { margin-bottom: 1.5rem; }
 .leak-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; font-weight: 600; color: #444; }
-.progress-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+.progress-bar { height: 8px; background: var(--rgc-cream-hover); border-radius: 4px; overflow: hidden; }
 .fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
 
 .fill-red { background: #ef4444; }    /* Doubles */
 .fill-yellow { background: #f59e0b; } /* 3 Putts */
 .fill-lime { background: #84cc16; } /* FIR miss */
 
-/* Tip Box */
+/* Tip Box — warm cream, slightly subtler than card surfaces */
 .takeaway-box {
-    background: #f0f9ff;
-    border-left: 4px solid #1e3c72;
+    background: var(--rgc-cream-subtle);
     padding: 1rem;
-    border-radius: 4px;
+    border-radius: 8px;
     margin-top: auto;
     cursor: pointer;
     transition: background 0.2s;
     user-select: none;
+    position: relative;
+    overflow: hidden;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-.takeaway-box:active { background: #e0f2fe; }
-.takeaway-box h4 { margin: 0 0 5px 0; color: #1e3c72; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
-.takeaway-box p { margin: 0; font-size: 0.95rem; color: #333; line-height: 1.4; font-style: italic; }
+.takeaway-box:active { background: var(--rgc-cream-hover); }
+.takeaway-box h4 { margin: 0 0 5px 0; color: var(--rgc-green); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.takeaway-box p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+    font-style: italic;
+    text-align: center;
+    transition: opacity 0.5s ease;
+}
+
+.takeaway-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--rgc-green-light);
+    transition: width 0.18s ease-out;
+}
+
+.takeaway-progress.resetting {
+    transition: none;
+}
 
 @media (max-width: 900px) {
     .dashboard-mid-row { grid-template-columns: 1fr; }

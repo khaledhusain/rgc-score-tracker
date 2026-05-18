@@ -1,7 +1,7 @@
 /* Course Scorecard page */
 .course-scorecard-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--rgc-page);
 }
 .course-scorecard-page .content {
   max-width: 1400px;
@@ -9,6 +9,6 @@
   padding: 1.5rem;
 }
 .course-scorecard-page .content h2 {
-  color: #1e3c72;
+  color: var(--rgc-green);
   margin-bottom: 0.5rem;
 }

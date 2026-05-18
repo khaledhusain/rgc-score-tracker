@@ -3,7 +3,7 @@
     <Navbar />
     <main class="content">
       <h2>Scorecard</h2>
-      <p>Course scorecard view.</p>
+      <p>Scorecard Coming Soon</p>
     </main>
   </div>
 </template>

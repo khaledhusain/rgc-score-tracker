@@ -1,3 +1,16 @@
+:root {
+  --rgc-green: #1a5c38;
+  --rgc-green-light: #2d8a52;
+  --rgc-green-dark: #14532d;
+  --rgc-page: #ebe6dc;
+  --rgc-cream: #f5f0e6;
+  --rgc-cream-muted: #e8e2d6;
+  --rgc-cream-hover: #e0d9cc;
+  --rgc-cream-input: #f0ebe3;
+  --rgc-cream-subtle: #f1ece2;
+  --rgc-green-tint: #e8f5ec;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,8 +23,21 @@ html, body {
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f5f5f5;
+  background: var(--rgc-page);
   color: #333;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+textarea,
+select {
+  background-color: var(--rgc-cream-input);
+  color: #333;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):focus,
+textarea:focus,
+select:focus {
+  background-color: var(--rgc-cream-input);
 }
 
 a {

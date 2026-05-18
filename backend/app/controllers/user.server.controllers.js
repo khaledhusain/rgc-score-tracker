@@ -6,14 +6,7 @@ exports.create_account = (req, res) => {
     first_name: Joi.string().trim().min(1).required(),
     last_name: Joi.string().trim().min(1).required(),
     email: Joi.string().trim().email().required(),
-    password: Joi.string()
-      .min(6)
-      .max(30)
-      .pattern(/[0-9]/)
-      .pattern(/[A-Z]/)
-      .pattern(/[a-z]/)
-      .pattern(/[^A-Za-z0-9]/)
-      .required()
+    password: Joi.string().required()
   }).unknown(false);
 
   const { error, value } = schema.validate(req.body);
@@ -43,7 +36,7 @@ exports.create_account = (req, res) => {
 exports.login = (req, res) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required()
+    password: Joi.string().required()
   });
 
   const { error } = schema.validate(req.body);

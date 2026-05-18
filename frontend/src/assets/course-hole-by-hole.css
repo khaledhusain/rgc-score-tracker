@@ -1,7 +1,7 @@
 /* --- COURSE HOLE BY HOLE --- */
 .course-hole-page {
     min-height: 100vh;
-    background: #f5f5f5;
+    background: var(--rgc-page);
 }
 
 .course-hole-page .content {
@@ -17,7 +17,7 @@
     margin: 0;
     font-size: 1.75rem;
     font-weight: 700;
-    color: #1e3c72;
+    color: var(--rgc-green);
 }
 .course-hole-page .page-title .page-subtitle {
     margin: 0.25rem 0 0;
@@ -32,7 +32,7 @@
     margin-left: calc(-50vw + 50%);
     margin-top: 1rem;
     margin-bottom: 1rem;
-    background: rgba(26, 72, 133, 0.699);
+    background: rgba(26, 92, 56, 0.7);
     padding: 1rem 1.5rem;
     box-sizing: border-box;
 }
@@ -51,7 +51,7 @@
     height: 40px;
     border-radius: 50%;
     border: 1px solid #ddd;
-    background: white;
+    background: var(--rgc-cream);
     font-weight: 600;
     color: #333;
     cursor: pointer;
@@ -61,9 +61,9 @@
     background: #eee;
 }
 .course-hole-page .hole-btn.active {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
-    border-color: #1e3c72;
+    border-color: var(--rgc-green);
 }
 
 /* Main content: image placeholder + details panel */
@@ -101,7 +101,7 @@
 
 /* Right panel: hole details */
 .course-hole-page .hole-details {
-    background: white;
+    background: var(--rgc-cream);
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
@@ -111,7 +111,7 @@
     margin: 0 0 1rem;
     font-size: 1.25rem;
     font-weight: 700;
-    color: #1e3c72;
+    color: var(--rgc-green);
 }
 
 .course-hole-page .detail-row {
@@ -135,7 +135,7 @@
     min-width: 120px;
 }
 .course-hole-page .detail-value {
-    color: #1e3c72;
+    color: var(--rgc-green);
     font-weight: 600;
 }
 

@@ -8,7 +8,7 @@
 
 /* SIDEBAR */
 .profile-sidebar {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
     border-radius: 8px;
     padding: 1.5rem;
@@ -33,7 +33,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid white;
+    border: 3px solid var(--rgc-cream);
     border-radius: 50%;
 }
 
@@ -78,11 +78,11 @@
 }
 .profile-tab:last-child { border-top-right-radius: 10; }
 .profile-tab:hover { background: #cbd5e1; }
-.profile-tab.active { background: #1e3c72; color: white; }
+.profile-tab.active { background: var(--rgc-green); color: white; }
 
 /* Big 3 Header */
 .profile-big-stats {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
     display: flex;
     padding: 2rem 0;
@@ -97,7 +97,7 @@
 .profile-list {
     border: 1px solid #ddd;
     border-top: none;
-    background: white;
+    background: var(--rgc-cream);
 }
 .profile-list-row {
     display: flex;
@@ -107,9 +107,9 @@
     font-weight: 600;
     color: #444;
 }
-.profile-list-row.alt { background: #f8fafc; }
+.profile-list-row.alt { background: var(--rgc-cream-muted); }
 .profile-list-label { opacity: 0.8; }
-.profile-list-val { font-weight: 800; color: #1e3c72; }
+.profile-list-val { font-weight: 800; color: var(--rgc-green); }
 
 @media (max-width: 900px) {
     .profile-grid { grid-template-columns: 1fr; }

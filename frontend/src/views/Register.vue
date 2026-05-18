@@ -43,9 +43,6 @@
             placeholder="••••••••"
             required
           />
-          <p class="password-hint">
-            Min 6 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
-          </p>
         </div>
 
         <button type="submit" :disabled="loading">

@@ -404,7 +404,7 @@ onMounted(fetchRound);
 .stats-summary {
     display: flex;
     justify-content: space-between;
-    background: white;
+    background: var(--rgc-cream);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
@@ -422,7 +422,7 @@ onMounted(fetchRound);
 .stat-value {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #1e3c72;
+    color: var(--rgc-green);
 }
 
 .stat-label {

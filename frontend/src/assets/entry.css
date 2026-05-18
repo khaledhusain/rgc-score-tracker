@@ -9,7 +9,7 @@
 }
 
 .entry-card {
-    background: white;
+    background: var(--rgc-cream);
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.05);
@@ -20,7 +20,7 @@
 
 .entry-header h2 {
     margin: 0 0 2.5rem 0;
-    color: #1e3c72;
+    color: var(--rgc-green);
     font-size: 1.8rem;
     
 }
@@ -74,13 +74,13 @@
 /* Selection Rings */
 .tee-dot.selected {
     transform: scale(1.03);
-    box-shadow: 0 0 0 4px white, 0 0 0 6px #333; 
+    box-shadow: 0 0 0 4px var(--rgc-cream), 0 0 0 6px #333; 
 }
 
 /* Tee Colors */
 .t-black { background-color: #222; }
 .t-gold  { background-color: #d4af37; }
-.t-blue  { background-color: #1e3c72; }
+.t-blue  { background-color: #2563eb; }
 .t-white { background-color: #ffffff; }
 .t-red   { background-color: #d32f2f; }
 
@@ -96,7 +96,7 @@
 .hole-option {
     flex: 1;
     padding: 12px;
-    background: #f9f9f9;
+    background: var(--rgc-cream-muted);
     border: none;
     border-right: 1px solid #ddd;
     cursor: pointer;
@@ -110,11 +110,11 @@
 }
 
 .hole-option:hover {
-    background: #f0f0f0;
+    background: var(--rgc-cream-hover);
 }
 
 .hole-option.active {
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
 }
 
@@ -127,21 +127,21 @@
     font-size: 1rem;
     font-family: inherit;
     color: #333;
-    background: #f9f9f9;
+    background: var(--rgc-cream-muted);
     outline: none;
     transition: border-color 0.2s;
 }
 
 .clean-date-input:focus {
-    border-color: #1e3c72;
-    background: white;
+    border-color: var(--rgc-green);
+    background: var(--rgc-cream);
 }
 
 /* --- ACTIONS --- */
 .action-btn {
     width: 100%;
     padding: 14px;
-    background: #1e3c72;
+    background: var(--rgc-green);
     color: white;
     border: none;
     border-radius: 8px;
@@ -153,7 +153,7 @@
 }
 
 .action-btn:hover {
-    background: #152b52;
+    background: var(--rgc-green-light);
 }
 
 .action-btn:disabled {
